@@ -1,22 +1,23 @@
 Campus IT desks do not have a ticket problem. They have a repeatability problem.
 
-The same WiFi, password, MFA, and “what’s going on with my ticket?” requests hit the queue every morning. Hardware that actually needs a technician waits behind work a script could finish. Most chatbots make that worse: they guess, they open duplicates, and nobody can prove whether they deflected anything.
+The same WiFi, password, MFA, and “what’s going on with my ticket?” requests hit the queue every morning. Hardware that needs a technician waits behind work a script could finish. Most chatbots make that worse: they guess, they open duplicates, and nobody can prove deflection.
 
-I built a Salesforce Agentforce agent that sits in Service Cloud and behaves like a triage desk.
+I built a native Salesforce Agentforce agent that sits in Service Cloud and behaves like a triage desk — not a FAQ widget.
 
-It tries a known-issue guide first. If the student still needs a human, it opens one Case on the right queue, stamps a first-response SLA, and reuses the open ticket instead of creating a second one. Every action writes an append-only audit row. Supervisors can ask how backed up the desk is and get open load, oldest wait, and today’s deflection rate.
+Stack: Apex invocables (API 64.0), Service Cloud Cases, Custom Metadata for routing / known issues / SLA, five Campus IT queues, an append-only `Campus_IT_Interaction__c` object, and a Lightning app technicians already know how to use. No hardcoded record IDs. No Connected Apps. No secrets. Tests run without SeeAllData.
 
-How it works:
+What it does:
 
-1. Find a self-service guide — WiFi, password, VPN, Outlook, MFA, or laptop first aid
-2. Escalate only when a technician is required — queue routing, SLA clock, published Case comment
-3. Update or check status on the existing Case — closed tickets are rejected
-4. Snapshot desk load from the audit trail — deflection is matches ÷ (matches + new tickets)
+- Tries a known-issue guide before anyone opens a Case
+- Escalates once, on the right queue, with a first-response clock
+- Reuses the open ticket instead of creating a duplicate
+- Rejects updates on closed Cases
+- Reports open load, oldest wait, and today’s deflection rate from the audit trail
 
-Routing, known-issue articles, and SLA hours live in Custom Metadata. No hardcoded Salesforce IDs. Tests run without SeeAllData.
+Try it: Developer Edition or Trailhead Playground, Salesforce CLI, `sf project deploy start`, assign **Campus IT Triage Agent**, run the demo data script. Agentforce is optional for the technician app and required for the conversational demo.
 
-Repo, docs, and the 80-second walkthrough:
+Code, architecture, unmanaged-package steps, and the 60-second script:
 
 https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
 
-#Salesforce #Agentforce #ServiceCloud #Apex #HigherEd #ITSM
+#Salesforce #Agentforce #ServiceCloud #Apex #SalesforceDeveloper #ITSM #HigherEd #BuildInPublic

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="Campus IT Service Desk Triage Agent">
+  <rect width="1280" height="320" fill="#081224"/>
+  <rect width="10" height="320" fill="#3D8BFF"/>
+  <text x="48" y="72" fill="#3D8BFF" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2">AGENTFORCE  ·  SERVICE CLOUD  ·  SALESFORCE DX</text>
+  <text x="48" y="150" fill="#F4F7FB" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700">Campus IT Service Desk Triage Agent</text>
+  <text x="48" y="202" fill="#9AAAC0" font-family="Arial, Helvetica, sans-serif" font-size="22">Self-service first. One Case on the right queue. An audit trail that can prove deflection.</text>
+  <text x="48" y="268" fill="#3D8BFF" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700">FIVE INVOCABLE ACTIONS  ·  CUSTOM METADATA ROUTING  ·  SLA  ·  APPEND-ONLY AUDIT</text>
+</svg>

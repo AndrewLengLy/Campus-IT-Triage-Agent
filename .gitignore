@@ -26,9 +26,10 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Secrets
+# Secrets — this project has none at runtime. Keep the example committable.
 .env
 .env.*
+!.env.example
 *.key
 authFile.json
 
