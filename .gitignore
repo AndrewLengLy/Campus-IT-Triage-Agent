@@ -1,0 +1,36 @@
+# Salesforce CLI
+.sf/
+.sfdx/
+.localdevserver/
+.sf-dev/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+IlluminatedCloud/
+.illuminatedCloud/
+
+# LWC / Node
+node_modules/
+coverage/
+.nyc_output/
+**/jsconfig.json
+**/.eslintrc.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+*.key
+authFile.json
+
+# Regenerated demo frames (keep the mp4)
+docs/demo/frames/

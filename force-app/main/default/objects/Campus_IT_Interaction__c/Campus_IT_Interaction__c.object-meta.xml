@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Append-only audit trail of Campus IT Triage Agent actions for operations and risk review.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <compactLayoutAssignment>Campus_IT_Interaction</compactLayoutAssignment>
+    <label>Campus IT Interaction</label>
+    <nameField>
+        <displayFormat>INT-{00000}</displayFormat>
+        <label>Interaction Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Campus IT Interactions</pluralLabel>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Action_Type__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Outcome__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Student_ID__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Case_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

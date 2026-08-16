@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Laptop No Power</label>
+    <protected>false</protected>
+    <values>
+        <field>Category__c</field>
+        <value xsi:type="xsd:string">Hardware</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Keywords__c</field>
+        <value xsi:type="xsd:string">laptop,won't turn on,wont turn on,no power,black screen</value>
+    </values>
+    <values>
+        <field>Requires_Escalation__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Resolution_Steps__c</field>
+        <value xsi:type="xsd:string">1. Confirm the charger LED is on and try a different outlet.
+2. Hold the power button for 15 seconds, then try starting again.
+3. If the laptop is a campus-owned device and still will not power on, escalate. A technician needs to inspect the hardware.</value>
+    </values>
+    <values>
+        <field>Title__c</field>
+        <value xsi:type="xsd:string">Laptop will not power on</value>
+    </values>
+</CustomMetadata>

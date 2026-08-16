@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Outlook Offline</label>
+    <protected>false</protected>
+    <values>
+        <field>Category__c</field>
+        <value xsi:type="xsd:string">Software</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Keywords__c</field>
+        <value xsi:type="xsd:string">outlook,email,offline,mailbox,o365</value>
+    </values>
+    <values>
+        <field>Requires_Escalation__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Resolution_Steps__c</field>
+        <value xsi:type="xsd:string">1. Check that the device is online and, if off campus, that VPN is connected.
+2. In Outlook, turn off Work Offline if it is enabled.
+3. Quit Outlook fully and reopen it.
+4. Try Outlook on the web. If webmail works but the app does not, escalate with that detail.</value>
+    </values>
+    <values>
+        <field>Title__c</field>
+        <value xsi:type="xsd:string">Fix Outlook showing offline</value>
+    </values>
+</CustomMetadata>

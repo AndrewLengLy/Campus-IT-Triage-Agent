@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requires_Escalation__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>When true, share first-aid steps and then escalate. Use for issues a student cannot finish alone.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Requires Escalation</label>
+    <type>Checkbox</type>
+</CustomField>

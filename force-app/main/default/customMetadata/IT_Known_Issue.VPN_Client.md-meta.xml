@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>VPN Client</label>
+    <protected>false</protected>
+    <values>
+        <field>Category__c</field>
+        <value xsi:type="xsd:string">Network</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Keywords__c</field>
+        <value xsi:type="xsd:string">vpn,globalprotect,remote access,off campus</value>
+    </values>
+    <values>
+        <field>Requires_Escalation__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Resolution_Steps__c</field>
+        <value xsi:type="xsd:string">1. Confirm you are using the official campus VPN client.
+2. Disconnect, quit the client, and reopen it.
+3. Sign in with your student ID and complete MFA.
+4. If the client will not connect, note the exact error text and escalate.</value>
+    </values>
+    <values>
+        <field>Title__c</field>
+        <value xsi:type="xsd:string">Reconnect the campus VPN</value>
+    </values>
+</CustomMetadata>
