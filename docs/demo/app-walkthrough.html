@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Campus IT Service Desk</title>
+  <style>
+    :root {
+      --navy: #16325c;
+      --brand: #0176d3;
+      --page: #eef1f6;
+      --card: #ffffff;
+      --text: #181818;
+      --muted: #5c5c5c;
+      --line: #dddbda;
+      --ok: #2e844a;
+      --warn: #8c4b02;
+      --high: #ba0517;
+      --einstein: #7f41c1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1920px; height: 1080px; overflow: hidden; font-family: Arial, sans-serif; color: var(--text); background: #0b1220; }
+    #stage { width: 1920px; height: 1080px; display: flex; flex-direction: column; background: var(--page); position: relative; }
+    header.sf { height: 48px; background: var(--navy); color: #fff; display: flex; align-items: center; padding: 0 14px; gap: 14px; flex-shrink: 0; }
+    .waffle { width: 16px; height: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .waffle i { background: #fff; border-radius: 1px; }
+    .cloud { font-weight: 700; font-size: 14px; }
+    .search { flex: 1; max-width: 480px; background: #0f2444; border: 1px solid #2a4a73; border-radius: 4px; padding: 6px 10px; color: #c5d5ea; font-size: 12px; }
+    .who { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 12px; }
+    .bell { background: #c23934; color: #fff; border-radius: 10px; padding: 1px 6px; font-size: 11px; font-weight: 700; }
+    .avatar { width: 26px; height: 26px; border-radius: 50%; background: #0176d3; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+    nav.app { height: 38px; background: #fff; border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 14px; gap: 18px; flex-shrink: 0; }
+    .app-name { font-weight: 700; color: var(--navy); font-size: 14px; padding-right: 10px; border-right: 1px solid var(--line); }
+    nav.app button { border: 0; background: none; font: inherit; font-size: 13px; color: var(--muted); padding: 9px 0; border-bottom: 3px solid transparent; }
+    nav.app button.on { color: var(--brand); border-bottom-color: var(--brand); font-weight: 700; }
+    .workspace { flex: 1; display: flex; min-height: 0; }
+    main { flex: 1; padding: 12px 14px 8px; overflow: hidden; }
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 4px; height: 100%; display: flex; flex-direction: column; box-shadow: 0 1px 2px rgb(0 0 0 / 8%); }
+    .head { display: flex; align-items: flex-start; justify-content: space-between; padding: 10px 14px 6px; }
+    .head h1 { font-size: 17px; }
+    .meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .kpis { display: flex; gap: 8px; }
+    .kpi { min-width: 92px; background: #f4f6f9; border: 1px solid var(--line); border-radius: 4px; padding: 5px 8px; }
+    .kpi b { display: block; font-size: 18px; line-height: 1.1; }
+    .kpi span { font-size: 10px; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+    .kpi.hot b { color: var(--high); }
+    .kpi.ok b { color: var(--ok); }
+    .chips { display: flex; gap: 6px; padding: 0 14px 8px; }
+    .chip { font-size: 11px; border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 3px 8px; color: var(--muted); }
+    .chip.on { background: #eef4ff; border-color: #90cdf4; color: var(--brand); font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { text-align: left; padding: 6px 8px; border-top: 1px solid var(--line); white-space: nowrap; }
+    th { color: var(--muted); font-weight: 700; font-size: 10px; letter-spacing: 0.3px; text-transform: uppercase; background: #fafaf9; }
+    td a { color: var(--brand); font-weight: 700; text-decoration: none; }
+    .pri-high { color: var(--high); font-weight: 700; }
+    .pri-med { color: var(--warn); font-weight: 700; }
+    .pri-low { color: #3e3e3c; }
+    .due-late { color: var(--high); font-weight: 700; }
+    .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+    .pill.new { background: #eef4ff; color: #0176d3; }
+    .pill.work { background: #fef3e7; color: #8c4b02; }
+    .pill.match { background: #eaf5ee; color: var(--ok); }
+    .pill.created { background: #eef4ff; color: var(--brand); }
+    .pill.found { background: #f4eaff; color: var(--einstein); }
+    .pill.fail { background: #fce8e6; color: var(--high); }
+    .hidden { display: none !important; }
+    .highlights { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--line); background: #fafaf9; }
+    .hl span { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .hl b { font-size: 13px; }
+    .banner { margin: 8px 12px 0; background: #fef3e7; border: 1px solid #f3c78a; color: #8c4b02; font-size: 12px; padding: 6px 8px; border-radius: 4px; font-weight: 700; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 16px; padding: 10px 14px 4px; }
+    .field { margin-bottom: 8px; }
+    .field label { display: block; font-size: 10px; color: var(--muted); font-weight: 700; }
+    .field div { font-size: 12px; }
+    .path { display: flex; gap: 0; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+    .path i { flex: 1; text-align: center; font-size: 11px; font-weight: 700; padding: 6px 0; background: #eef4ff; color: var(--brand); }
+    .path i:first-child { background: var(--brand); color: #fff; }
+    .rel { padding: 4px 12px 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rel h2 { font-size: 12px; margin: 4px 0 6px; }
+    .comment { background: #fafaf9; border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; font-size: 11px; margin-bottom: 5px; }
+    .comment b { display: block; font-size: 10px; color: var(--muted); }
+    aside.agent { width: 400px; background: #fff; border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+    .agent-top { padding: 10px 12px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
+    .spark { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #7f41c1, #0176d3); }
+    .agent-top strong { display: block; font-size: 12px; }
+    .agent-top em { font-style: normal; font-size: 10px; color: var(--muted); }
+    .thread { flex: 1; padding: 10px; overflow: hidden; display: flex; flex-direction: column; gap: 7px; }
+    .msg { max-width: 94%; padding: 6px 8px; border-radius: 8px; font-size: 12px; line-height: 1.35; white-space: pre-wrap; }
+    .msg.user { align-self: flex-end; background: #eef4ff; }
+    .msg.bot { align-self: flex-start; background: #f3f2f2; }
+    .action { align-self: flex-start; font-size: 10px; font-weight: 700; color: var(--einstein); background: #f4eaff; border-radius: 10px; padding: 3px 7px; }
+    .composer { border-top: 1px solid var(--line); padding: 8px; }
+    .composer .box { border: 1px solid var(--line); border-radius: 14px; min-height: 36px; padding: 8px 10px; font-size: 12px; }
+    .composer .box.empty { color: #939393; }
+    .caption { height: 68px; background: #081224; color: #f4f7fb; display: flex; align-items: center; padding: 0 24px; font-size: 22px; font-weight: 600; flex-shrink: 0; }
+    .caption small { margin-left: auto; font-size: 13px; color: #8aa0bd; font-weight: 500; }
+    #cursor { position: absolute; width: 18px; height: 18px; pointer-events: none; z-index: 50; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 45%)); transition: left 360ms ease, top 360ms ease; }
+    .click-ring { position: absolute; width: 22px; height: 22px; border: 2px solid var(--brand); border-radius: 50%; pointer-events: none; z-index: 49; opacity: 0; }
+    .click-ring.go { animation: ring 420ms ease-out; }
+    @keyframes ring { from { opacity: 0.9; transform: scale(0.4); } to { opacity: 0; transform: scale(1.8); } }
+    .row-flash { background: #fff7e6 !important; }
+    .new-row { outline: 2px solid #0176d3; outline-offset: -2px; }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <header class="sf">
+      <div class="waffle"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="cloud">Salesforce</div>
+      <div class="search">Search Campus IT, Case Number, Student ID...</div>
+      <div class="who">
+        <span>Sun, Aug 16  ·  Night shift</span>
+        <span class="bell">3</span>
+        <span>Maya Ortiz  ·  Service Desk Lead</span>
+        <div class="avatar">MO</div>
+      </div>
+    </header>
+    <nav class="app">
+      <div class="app-name">Campus IT</div>
+      <button id="tab-cases" class="on">Cases</button>
+      <button id="tab-contacts">Contacts</button>
+      <button id="tab-int">Campus IT Interactions</button>
+    </nav>
+    <div class="workspace">
+      <main>
+        <section id="view-cases" class="panel">
+          <div class="head">
+            <div>
+              <h1>Campus IT Agent Cases</h1>
+              <div class="meta" id="case-count">8 items  ·  Agent Sourced equals True  ·  Sorted by First Response Due</div>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><span>Open</span><b id="kpi-open">8</b></div>
+              <div class="kpi hot"><span>High</span><b id="kpi-high">2</b></div>
+              <div class="kpi hot"><span>Oldest wait</span><b>5h</b></div>
+              <div class="kpi ok"><span>Deflection</span><b id="kpi-def">71%</b></div>
+            </div>
+          </div>
+          <div class="chips">
+            <span class="chip on">All queues</span>
+            <span class="chip">Network (3)</span>
+            <span class="chip">Hardware (2)</span>
+            <span class="chip">Software (1)</span>
+            <span class="chip">Identity (1)</span>
+            <span class="chip">General (1)</span>
+            <span class="chip">SLA at risk (2)</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Case</th><th>Subject</th><th>Pri</th><th>Status</th><th>Student</th><th>ID</th>
+                <th>Category</th><th>First response due</th><th>Guide tried</th><th>Owner</th>
+              </tr>
+            </thead>
+            <tbody id="case-rows">
+              <tr>
+                <td><a href="#">00001011</a></td><td>Campus IT: Network - VPN drops off campus</td>
+                <td class="pri-high">High</td><td><span class="pill work">Working</span></td>
+                <td>Priya Shah</td><td>S10000014</td><td>Network</td>
+                <td class="due-late">Aug 15, 11:40 PM</td><td>Campus VPN client</td><td>Campus IT - Network</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001016</a></td><td>Campus IT: Identity - MFA loop after password reset</td>
+                <td class="pri-high">High</td><td><span class="pill new">New</span></td>
+                <td>Marcus Webb</td><td>S10000019</td><td>Account</td>
+                <td class="due-late">Aug 16, 12:10 AM</td><td>Approve the MFA prompt</td><td>Campus IT - Identity</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001018</a></td><td>Campus IT: Hardware - library printer jam, 2nd floor</td>
+                <td class="pri-med">Medium</td><td><span class="pill work">Working</span></td>
+                <td>Elena Vasquez</td><td>S10000007</td><td>Hardware</td>
+                <td>Aug 16, 8:05 AM</td><td></td><td>Campus IT - Hardware</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001019</a></td><td>Campus IT: Software - Outlook stuck Offline</td>
+                <td class="pri-med">Medium</td><td><span class="pill new">New</span></td>
+                <td>Chris Okonkwo</td><td>S10000022</td><td>Software</td>
+                <td>Aug 16, 10:40 AM</td><td>Outlook stuck Offline</td><td>Campus IT - Software</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001020</a></td><td>Campus IT: Network - lecture hall B12 no WiFi</td>
+                <td class="pri-med">Medium</td><td><span class="pill new">New</span></td>
+                <td>Riley Cho</td><td>S10000031</td><td>Network</td>
+                <td>Aug 16, 11:15 AM</td><td>Reconnect to campus WiFi</td><td>Campus IT - Network</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001021</a></td><td>Campus IT: Network - eduroam on personal laptop</td>
+                <td class="pri-low">Low</td><td><span class="pill new">New</span></td>
+                <td>Sam Patel</td><td>S10000003</td><td>Network</td>
+                <td>Aug 16, 4:00 PM</td><td>Reconnect to campus WiFi</td><td>Campus IT - Network</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001022</a></td><td>Campus IT: General - loaner laptop request</td>
+                <td class="pri-low">Low</td><td><span class="pill new">New</span></td>
+                <td>Avery Brooks</td><td>S10000028</td><td>General</td>
+                <td>Aug 17, 8:00 AM</td><td></td><td>Campus IT - General</td>
+              </tr>
+              <tr>
+                <td><a href="#">00001023</a></td><td>Campus IT: Hardware - docking station no display</td>
+                <td class="pri-med">Medium</td><td><span class="pill work">Working</span></td>
+                <td>Noah Kim</td><td>S10000011</td><td>Hardware</td>
+                <td>Aug 16, 2:30 PM</td><td></td><td>Campus IT - Hardware</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="view-case" class="panel hidden">
+          <div class="head">
+            <div>
+              <h1>Case <span style="color:#0176d3">00001024</span>  ·  Jordan Chen</h1>
+              <div class="meta">Created 12:24 AM by Campus IT Triage Agent  ·  Origin Web  ·  Record type Campus IT</div>
+            </div>
+            <div class="kpis">
+              <div class="kpi hot"><span>Priority</span><b>High</b></div>
+              <div class="kpi"><span>SLA</span><b>4h</b></div>
+              <div class="kpi ok"><span>Guide</span><b>Tried</b></div>
+            </div>
+          </div>
+          <div class="path"><i>New</i><i>Working</i><i>On Hold</i><i>Closed</i></div>
+          <div class="highlights">
+            <div class="hl"><span>Status</span><b>New</b></div>
+            <div class="hl"><span>Priority</span><b class="pri-high">High</b></div>
+            <div class="hl"><span>Student ID</span><b>S10000002</b></div>
+            <div class="hl"><span>IT Category</span><b>Hardware</b></div>
+            <div class="hl"><span>First response due</span><b>Aug 16, 4:24 AM</b></div>
+            <div class="hl"><span>Owner</span><b>Campus IT - Hardware</b></div>
+          </div>
+          <div class="banner">SLA watch: first response due in 4 hours. Exam-related hardware. Do not bounce this queue.</div>
+          <div class="cols">
+            <div>
+              <div class="field"><label>Subject</label><div>Campus IT: Hardware - laptop will not power on</div></div>
+              <div class="field"><label>Contact</label><div>Jordan Chen  ·  jordan.chen@campus.edu</div></div>
+              <div class="field"><label>Supplied email</label><div>jordan.chen@campus.edu</div></div>
+              <div class="field"><label>Location</label><div>Residence Hall C, room 214</div></div>
+            </div>
+            <div>
+              <div class="field"><label>Agent sourced</label><div>True</div></div>
+              <div class="field"><label>Self service attempted</label><div>True</div></div>
+              <div class="field"><label>Self service article</label><div>Laptop will not power on</div></div>
+              <div class="field"><label>Reused existing ticket</label><div id="reused-flag">False</div></div>
+            </div>
+            <div>
+              <div class="field"><label>Description</label><div>Laptop will not power on before an exam. Student already tried a different charger. Power light never comes on.</div></div>
+              <div class="field"><label>Device</label><div>Campus-issued Dell Latitude 5540</div></div>
+              <div class="field"><label>Asset tag</label><div>IT-LTP-88421</div></div>
+              <div class="field"><label>Last modified</label><div>12:24 AM by Agentforce</div></div>
+            </div>
+          </div>
+          <div class="rel">
+            <div>
+              <h2>Case Comments (published)</h2>
+              <div class="comment" id="c1"><b>Campus IT Triage Agent  ·  12:24 AM</b>Escalated by the Campus IT Triage Agent. Laptop will not power on before an exam. Student already tried a different charger. Category Hardware. Reported urgency High.</div>
+              <div class="comment hidden" id="c2"><b>Campus IT Triage Agent  ·  12:25 AM</b>Student provided an update on an open ticket. Same laptop. Still dead. The power light never comes on.</div>
+            </div>
+            <div>
+              <h2>Campus IT Interactions</h2>
+              <table>
+                <thead><tr><th>Number</th><th>Action</th><th>Outcome</th><th>When</th></tr></thead>
+                <tbody>
+                  <tr><td>INT-00018</td><td>Self Service</td><td><span class="pill match">Matched</span></td><td>12:24 AM</td></tr>
+                  <tr><td>INT-00019</td><td>Escalate</td><td><span class="pill created">Created</span></td><td>12:24 AM</td></tr>
+                  <tr id="int-reuse" class="hidden"><td>INT-00020</td><td>Escalate</td><td><span class="pill match">Reused</span></td><td>12:25 AM</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-contacts" class="panel hidden">
+          <div class="head">
+            <div>
+              <h1>Student contacts</h1>
+              <div class="meta">External ID is Student_ID__c  ·  6 records with open or recent IT work</div>
+            </div>
+          </div>
+          <table>
+            <thead><tr><th>Name</th><th>Student ID</th><th>Email</th><th>Open cases</th><th>Last issue</th><th>Last interaction</th></tr></thead>
+            <tbody>
+              <tr><td>Alex Rivera</td><td>S10000001</td><td>alex.rivera@campus.edu</td><td>0</td><td>WiFi dropout (deflected)</td><td>Self Service / Matched</td></tr>
+              <tr><td>Jordan Chen</td><td>S10000002</td><td>jordan.chen@campus.edu</td><td>1</td><td>Laptop no power</td><td>Escalate / Created</td></tr>
+              <tr><td>Sam Patel</td><td>S10000003</td><td>sam.patel@campus.edu</td><td>1</td><td>Eduroam on personal laptop</td><td>Status / Found</td></tr>
+              <tr><td>Priya Shah</td><td>S10000014</td><td>priya.shah@campus.edu</td><td>1</td><td>VPN drops off campus</td><td>Update / Updated</td></tr>
+              <tr><td>Marcus Webb</td><td>S10000019</td><td>marcus.webb@campus.edu</td><td>1</td><td>MFA loop</td><td>Escalate / Created</td></tr>
+              <tr><td>Elena Vasquez</td><td>S10000007</td><td>elena.vasquez@campus.edu</td><td>1</td><td>Library printer jam</td><td>Status / Found</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="view-int" class="panel">
+          <div class="head">
+            <div>
+              <h1>Campus IT Interactions Today</h1>
+              <div class="meta">Append-only  ·  17 rows before this conversation  ·  Updates and deletes blocked</div>
+            </div>
+            <div class="kpis">
+              <div class="kpi ok"><span>Matched</span><b>12</b></div>
+              <div class="kpi"><span>Created</span><b>5</b></div>
+              <div class="kpi"><span>Reused</span><b>3</b></div>
+              <div class="kpi"><span>Snapshots</span><b>2</b></div>
+            </div>
+          </div>
+          <div class="chips">
+            <span class="chip on">Today</span>
+            <span class="chip">Self Service</span>
+            <span class="chip">Escalate</span>
+            <span class="chip">Status</span>
+            <span class="chip">Update</span>
+            <span class="chip">Operations</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Number</th><th>Action</th><th>Outcome</th><th>Student ID</th><th>Case</th><th>Category</th><th>Article / summary</th><th>When</th></tr>
+            </thead>
+            <tbody id="int-rows">
+              <tr><td>INT-00001</td><td>Self Service</td><td><span class="pill match">Matched</span></td><td>S10000008</td><td></td><td>Account</td><td>Reset a forgotten campus password</td><td>8:04 PM</td></tr>
+              <tr><td>INT-00002</td><td>Self Service</td><td><span class="pill match">Matched</span></td><td>S10000011</td><td></td><td>Software</td><td>Outlook stuck Offline</td><td>8:22 PM</td></tr>
+              <tr><td>INT-00003</td><td>Escalate</td><td><span class="pill created">Created</span></td><td>S10000014</td><td>00001011</td><td>Network</td><td>Campus VPN client</td><td>8:41 PM</td></tr>
+              <tr><td>INT-00004</td><td>Status</td><td><span class="pill found">Found</span></td><td>S10000014</td><td>00001011</td><td>Network</td><td>Working on Network queue</td><td>9:02 PM</td></tr>
+              <tr><td>INT-00005</td><td>Self Service</td><td><span class="pill match">Matched</span></td><td>S10000001</td><td></td><td>Network</td><td>Reconnect to campus WiFi</td><td>9:18 PM</td></tr>
+              <tr><td>INT-00006</td><td>Escalate</td><td><span class="pill created">Created</span></td><td>S10000019</td><td>00001016</td><td>Account</td><td>Approve the MFA prompt</td><td>9:40 PM</td></tr>
+              <tr><td>INT-00007</td><td>Update</td><td><span class="pill created">Updated</span></td><td>S10000007</td><td>00001018</td><td>Hardware</td><td>Building and room added</td><td>10:05 PM</td></tr>
+              <tr><td>INT-00008</td><td>Self Service</td><td><span class="pill fail">No Match</span></td><td>S10000028</td><td></td><td>General</td><td>Loaner laptop request</td><td>10:21 PM</td></tr>
+              <tr><td>INT-00009</td><td>Escalate</td><td><span class="pill created">Created</span></td><td>S10000028</td><td>00001022</td><td>General</td><td>Loaner laptop request</td><td>10:22 PM</td></tr>
+              <tr><td>INT-00010</td><td>Operations</td><td><span class="pill found">Snapshot</span></td><td></td><td>00001011</td><td></td><td>7 open, 68% deflection</td><td>10:45 PM</td></tr>
+              <tr><td>INT-00011</td><td>Status</td><td><span class="pill fail">Not Found</span></td><td>S10000003</td><td></td><td></td><td>No ticket yet for Sam Patel</td><td>11:02 PM</td></tr>
+              <tr><td>INT-00012</td><td>Escalate</td><td><span class="pill created">Created</span></td><td>S10000003</td><td>00001021</td><td>Network</td><td>Eduroam on personal laptop</td><td>11:04 PM</td></tr>
+              <tr><td>INT-00013</td><td>Escalate</td><td><span class="pill match">Reused</span></td><td>S10000014</td><td>00001011</td><td>Network</td><td>VPN still drops after reboot</td><td>11:19 PM</td></tr>
+              <tr><td>INT-00014</td><td>Self Service</td><td><span class="pill match">Matched</span></td><td>S10000022</td><td></td><td>Software</td><td>Outlook stuck Offline</td><td>11:31 PM</td></tr>
+              <tr><td>INT-00015</td><td>Escalate</td><td><span class="pill created">Created</span></td><td>S10000022</td><td>00001019</td><td>Software</td><td>Outlook still Offline</td><td>11:33 PM</td></tr>
+              <tr><td>INT-00016</td><td>Update</td><td><span class="pill fail">Failed</span></td><td>S10000041</td><td>00000988</td><td></td><td>Closed ticket rejected</td><td>11:48 PM</td></tr>
+              <tr><td>INT-00017</td><td>Operations</td><td><span class="pill found">Snapshot</span></td><td></td><td>00001011</td><td></td><td>8 open, 71% deflection</td><td>11:59 PM</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+      <aside class="agent">
+        <div class="agent-top">
+          <div class="spark"></div>
+          <div>
+            <strong>Campus IT Service Desk</strong>
+            <em>Agentforce  ·  Student IT triage  ·  47 conversations today</em>
+          </div>
+        </div>
+        <div class="thread" id="thread">
+          <div class="msg bot">Night shift snapshot is on the Interactions tab. 8 open agent-sourced tickets, 2 high priority, oldest wait about 5 hours.</div>
+        </div>
+        <div class="composer"><div class="box empty" id="composer">Ask about WiFi, a ticket, or desk load...</div></div>
+      </aside>
+    </div>
+    <div class="caption" id="caption">A live Campus IT desk, not an empty demo org<small>No audio  ·  captions on screen</small></div>
+    <svg id="cursor" viewBox="0 0 24 24" style="left: 640px; top: 220px;"><path d="M4 2l14 12-6 1 3 7-3 1-3-7-5 4z" fill="#111" stroke="#fff" stroke-width="1.2"/></svg>
+    <div class="click-ring" id="ring"></div>
+  </div>
+  <script>
+    const caption = document.getElementById("caption");
+    const composer = document.getElementById("composer");
+    const thread = document.getElementById("thread");
+    const cursor = document.getElementById("cursor");
+    const ring = document.getElementById("ring");
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    function setCaption(text) {
+      caption.innerHTML = text + '<small>No audio  ·  captions on screen</small>';
+    }
+    function showView(id) {
+      ["cases", "case", "int", "contacts"].forEach((name) => {
+        document.getElementById("view-" + name).classList.toggle("hidden", id !== name);
+      });
+      document.getElementById("tab-cases").classList.toggle("on", id === "cases" || id === "case");
+      document.getElementById("tab-int").classList.toggle("on", id === "int");
+      document.getElementById("tab-contacts").classList.toggle("on", id === "contacts");
+    }
+    function moveCursor(x, y) {
+      cursor.style.left = x + "px";
+      cursor.style.top = y + "px";
+    }
+    async function clickAt(x, y) {
+      moveCursor(x, y);
+      await sleep(380);
+      ring.style.left = (x - 4) + "px";
+      ring.style.top = (y - 4) + "px";
+      ring.classList.remove("go");
+      void ring.offsetWidth;
+      ring.classList.add("go");
+      await sleep(200);
+    }
+    async function typeInto(text) {
+      composer.classList.remove("empty");
+      composer.textContent = "";
+      for (const ch of text) {
+        composer.textContent += ch;
+        await sleep(16);
+      }
+      await sleep(280);
+    }
+    function addMsg(role, text) {
+      const el = document.createElement("div");
+      el.className = "msg " + role;
+      el.textContent = text;
+      thread.appendChild(el);
+    }
+    function addAction(label) {
+      const el = document.createElement("div");
+      el.className = "action";
+      el.textContent = "Action  ·  " + label;
+      thread.appendChild(el);
+    }
+    function addInt(row) {
+      const tr = document.createElement("tr");
+      tr.className = "row-flash";
+      tr.innerHTML = `<td>${row.n}</td><td>${row.action}</td><td><span class="pill ${row.cls}">${row.outcome}</span></td><td>${row.sid}</td><td>${row.caseNo}</td><td>${row.cat || ""}</td><td>${row.summary}</td><td>12:24 AM</td>`;
+      document.getElementById("int-rows").prepend(tr);
+    }
+    function addCaseRow() {
+      const tr = document.createElement("tr");
+      tr.id = "row-1024";
+      tr.className = "row-flash new-row";
+      tr.innerHTML = `<td><a href="#">00001024</a></td><td>Campus IT: Hardware - laptop will not power on</td><td class="pri-high">High</td><td><span class="pill new">New</span></td><td>Jordan Chen</td><td>S10000002</td><td>Hardware</td><td>Aug 16, 4:24 AM</td><td>Laptop will not power on</td><td>Campus IT - Hardware</td>`;
+      document.getElementById("case-rows").prepend(tr);
+      document.getElementById("case-count").textContent = "9 items  ·  Agent Sourced equals True  ·  Sorted by First Response Due";
+      document.getElementById("kpi-open").textContent = "9";
+      document.getElementById("kpi-high").textContent = "3";
+      document.getElementById("kpi-def").textContent = "67%";
+    }
+
+    async function play() {
+      showView("cases");
+      setCaption("Night shift: 8 open agent-sourced tickets, 2 already past first response");
+      moveCursor(300, 250);
+      await sleep(3200);
+
+      await clickAt(430, 88);
+      showView("int");
+      setCaption("17 audit rows already today. Matched, created, reused, closed-ticket rejects");
+      await sleep(3200);
+
+      await clickAt(340, 88);
+      showView("contacts");
+      setCaption("Student contacts keyed by Student ID, not a Salesforce record Id");
+      await sleep(2400);
+
+      await clickAt(200, 88);
+      showView("cases");
+      setCaption("Alex Rivera, S10000001: residence-hall WiFi. Guide first, not a Case");
+      await sleep(700);
+      await clickAt(1600, 970);
+      await typeInto("Campus WiFi keeps dropping in my residence hall. My student ID is S10000001.");
+      addMsg("user", "Campus WiFi keeps dropping in my residence hall. My student ID is S10000001.");
+      composer.textContent = "";
+      composer.classList.add("empty");
+      addAction("Find Campus IT Self-Service Guide");
+      await sleep(400);
+      addMsg("bot", "I found a campus IT guide: Reconnect to campus WiFi.\n1. Forget CampusWiFi.\n2. Toggle airplane mode 10 seconds.\n3. Rejoin with student ID S10000001.\nNo Case opened. This is a deflection.");
+      setCaption("Self-service match. The Case list does not grow. Deflection stays measurable");
+      await sleep(3800);
+
+      await clickAt(430, 88);
+      showView("int");
+      addInt({ n: "INT-00018", action: "Self Service", outcome: "Matched", cls: "match", sid: "S10000001", caseNo: "", cat: "Network", summary: "Reconnect to campus WiFi" });
+      await sleep(1800);
+
+      await clickAt(200, 88);
+      showView("cases");
+      setCaption("Jordan Chen, S10000002: laptop dead before an exam. First aid, then Hardware");
+      await sleep(600);
+      await clickAt(1600, 970);
+      await typeInto("My laptop will not power on and I have an exam. Student ID S10000002. I already tried a different charger. Residence Hall C 214.");
+      addMsg("user", "My laptop will not power on and I have an exam. Student ID S10000002. I already tried a different charger.");
+      composer.textContent = "";
+      composer.classList.add("empty");
+      addAction("Find Campus IT Self-Service Guide");
+      await sleep(350);
+      addMsg("bot", "Guide: Laptop will not power on. First aid only. A technician still has to finish this.");
+      await sleep(700);
+      addAction("Escalate Campus IT Ticket");
+      await sleep(400);
+      addMsg("bot", "Created ticket #00001024. Owner: Campus IT - Hardware. Priority High. First response due 4:24 AM. Contact Jordan Chen linked.");
+      addCaseRow();
+      setCaption("New High Case on Hardware. SLA 4 hours. Contact, asset tag, and article stamped");
+      await sleep(3200);
+
+      await clickAt(248, 236);
+      showView("case");
+      setCaption("Technicians see a full Case: queue, SLA, location, asset, comments, audit");
+      await sleep(4200);
+
+      setCaption("Same student, same laptop. Reuse 00001024. Do not open 00001025");
+      await clickAt(1600, 970);
+      await typeInto("It is the same laptop. Still dead. The power light never comes on.");
+      addMsg("user", "It is the same laptop. Still dead. The power light never comes on.");
+      composer.textContent = "";
+      composer.classList.add("empty");
+      addAction("Escalate Campus IT Ticket");
+      await sleep(350);
+      addMsg("bot", "You already have ticket #00001024 open for this Hardware issue. I added a published comment. Reused Existing Ticket is now True.");
+      document.getElementById("c2").classList.remove("hidden");
+      document.getElementById("int-reuse").classList.remove("hidden");
+      document.getElementById("reused-flag").textContent = "True";
+      await sleep(3000);
+
+      setCaption("Supervisor ask: how backed up is the desk?");
+      await clickAt(1600, 970);
+      await typeInto("How busy is the Campus IT desk right now?");
+      addMsg("user", "How busy is the Campus IT desk right now?");
+      composer.textContent = "";
+      composer.classList.add("empty");
+      addAction("Get Campus IT Operations Snapshot");
+      await sleep(350);
+      addMsg("bot", "Campus IT has 9 open agent-sourced tickets (3 high priority). Oldest is #00001011, waiting about 5 hours. Today's deflection is 66.7 percent. Breakdown: Network 3; Hardware 3; Software 1; Identity 1; General 1.");
+      await sleep(3600);
+
+      await clickAt(430, 88);
+      showView("int");
+      addInt({ n: "INT-00019", action: "Escalate", outcome: "Created", cls: "created", sid: "S10000002", caseNo: "00001024", cat: "Hardware", summary: "Laptop will not power on" });
+      addInt({ n: "INT-00020", action: "Escalate", outcome: "Reused", cls: "match", sid: "S10000002", caseNo: "00001024", cat: "Hardware", summary: "Update on open hardware ticket" });
+      addInt({ n: "INT-00021", action: "Operations", outcome: "Snapshot", cls: "found", sid: "", caseNo: "00001011", cat: "", summary: "9 open, 3 high, 66.7% deflection" });
+      setCaption("github.com/AndrewLengLy/Campus-IT-Triage-Agent");
+      await sleep(4000);
+      document.body.dataset.demoComplete = "true";
+    }
+
+    document.getElementById("view-int").classList.add("hidden");
+    play();
+  </script>
+</body>
+</html>

@@ -33,5 +33,6 @@ Thumbs.db
 *.key
 authFile.json
 
-# Regenerated demo frames (keep the mp4)
+# Regenerated demo frames and raw Playwright captures
 docs/demo/frames/
+docs/demo/recordings/

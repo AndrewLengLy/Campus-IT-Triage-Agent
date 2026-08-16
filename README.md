@@ -10,7 +10,9 @@ Native **Salesforce DX** backend for an **Agentforce** agent that sits in **Serv
 
 This is not a web app and not an OAuth integration. There are no Connected Apps, named credentials, or runtime secrets. Authenticate the [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli), deploy `force-app`, assign a permission set.
 
-**Watch (80s, captioned):** [docs/demo/campus-it-triage-agent-demo.mp4](docs/demo/campus-it-triage-agent-demo.mp4) · [Release download](https://github.com/AndrewLengLy/Campus-IT-Triage-Agent/releases/download/v1.0.0/campus-it-triage-agent-demo.mp4)
+**App recording (silent, captions on screen):** [docs/demo/campus-it-app-recording.mp4](docs/demo/campus-it-app-recording.mp4)
+
+**Slide explainer (80s):** [docs/demo/campus-it-triage-agent-demo.mp4](docs/demo/campus-it-triage-agent-demo.mp4) · [Release download](https://github.com/AndrewLengLy/Campus-IT-Triage-Agent/releases/download/v1.0.0/campus-it-triage-agent-demo.mp4)
 
 ## The problem
 
