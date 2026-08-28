@@ -1,6 +1,15 @@
-# Agent Builder topic instructions
+# Optional: exposing the actions to Agentforce
 
-Paste this into the Campus IT triage topic after you add the five Apex actions.
+This project does not require Agentforce and does not ship any Agentforce metadata. The
+technician workspace, the routing, the SLA clock, and the audit trail all work without it.
+
+Because the five entry points are invocable actions with labelled inputs, an org that already
+has Agentforce enabled can expose them to a topic as custom actions with no change to this
+repo. If that is what you want, add the five actions to a topic and paste the instructions
+below. Everything here is org configuration, not repository content.
+
+Note that a standard Developer scratch org does not have Agentforce, so
+`./scripts/setup-scratch-org.sh` produces an org without it. That is expected.
 
 ## Topic label
 

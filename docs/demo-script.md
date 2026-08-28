@@ -1,6 +1,6 @@
 # Demo script
 
-About eight minutes. Use a Developer org after deploy, permission set assignment, and `scripts/apex/createDemoData.apex`.
+About eight minutes. Use an org seeded by `./scripts/setup-scratch-org.sh`, or by a deploy plus `scripts/apex/seedSampleData.apex`.
 
 Demo students:
 
@@ -14,7 +14,7 @@ Demo students:
 
 App Launcher → **Campus IT**. Show **Campus IT Agent Cases** and **Campus IT Interactions Today**.
 
-Say: the agent is not a chatbot bolted onto email. It writes Cases technicians already know how to work, and it writes an audit row for every action so the desk can measure deflection.
+Say: this is not a chatbot bolted onto email. It writes Cases technicians already know how to work, and an audit row for every action, so the desk can measure deflection.
 
 ## 2. Self-service first (90 seconds)
 

@@ -1,7 +1,7 @@
 /**
- * Agentforce action that reports live Campus IT desk load: open tickets,
- * oldest wait, high-priority volume, and today's self-service deflection.
- * Intended for supervisors and for the agent when a student asks how busy the desk is.
+ * Invocable action that reports live Campus IT desk load: open tickets, oldest wait,
+ * high-priority volume, and today's self-service deflection. Intended for supervisors
+ * and for any caller answering "how backed up is the desk right now?".
  */
 public with sharing class ITDeskOperationsSnapshot {
     public class SnapshotRequest {

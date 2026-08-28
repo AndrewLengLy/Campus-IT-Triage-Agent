@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>CampusITInteractionGuardTest</members>
         <members>ITDeskAuditService</members>
         <members>ITDeskAuditServiceTest</members>
+        <members>ITDeskBulkTest</members>
         <members>ITDeskDemoData</members>
         <members>ITDeskDemoDataTest</members>
+        <members>ITDeskNegativePathTest</members>
         <members>ITDeskOperationsSnapshot</members>
         <members>ITDeskOperationsSnapshotTest</members>
+        <members>ITDeskQueueRoutingTest</members>
         <members>ITDeskRoutingService</members>
+        <members>ITDeskRoutingServiceTest</members>
         <members>ITDeskSelfService</members>
         <members>ITDeskSelfServiceTest</members>
+        <members>ITDeskTestFactory</members>
         <members>ITDeskTicketEscalation</members>
         <members>ITDeskTicketEscalationTest</members>
         <members>ITDeskTicketStatus</members>
@@ -43,11 +49,14 @@
         <members>IT_Category_Queue_Map.Identity</members>
         <members>IT_Category_Queue_Map.Network</members>
         <members>IT_Category_Queue_Map.Software</members>
+        <members>IT_Known_Issue.Account_Provisioning</members>
         <members>IT_Known_Issue.Campus_WiFi_Reconnect</members>
+        <members>IT_Known_Issue.LMS_Course_Missing</members>
         <members>IT_Known_Issue.Laptop_No_Power</members>
         <members>IT_Known_Issue.MFA_Prompt</members>
         <members>IT_Known_Issue.Outlook_Offline</members>
         <members>IT_Known_Issue.Password_Reset</members>
+        <members>IT_Known_Issue.Printing_Quota</members>
         <members>IT_Known_Issue.VPN_Client</members>
         <members>IT_SLA_Rule.High</members>
         <members>IT_SLA_Rule.Low</members>

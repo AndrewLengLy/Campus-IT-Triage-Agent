@@ -36,7 +36,7 @@
         <application>Campus_IT</application>
         <visible>true</visible>
     </applicationVisibilities>
-    <description>Grants the Agentforce running user permission to find self-service guides, escalate and update student IT Cases, look up ticket status, write the interaction audit trail, and read the operations snapshot.</description>
+    <description>Grants the triage running user permission to find self-service guides, escalate and update student IT Cases, look up ticket status, append to the interaction audit trail, and read the operations snapshot. Interaction edit and delete are withheld so the audit trail stays append-only.</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Campus_IT_Interaction__c.Article_Title__c</field>

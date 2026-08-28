@@ -36,7 +36,7 @@ def new_slide() -> tuple[Image.Image, ImageDraw.ImageDraw]:
     draw = ImageDraw.Draw(image)
     draw.rectangle((0, 0, 12, HEIGHT), fill=BLUE)
     draw.text((64, 48), "CAMPUS IT  ·  SERVICE DESK TRIAGE AGENT", font=font(FONT_BOLD, 22), fill=BLUE)
-    draw.text((64, 1012), "Agentforce  ·  Service Cloud  ·  Salesforce DX", font=font(FONT_BODY, 22), fill=MUTED)
+    draw.text((64, 1012), "Service Cloud  ·  Apex  ·  Salesforce DX", font=font(FONT_BODY, 22), fill=MUTED)
     return image, draw
 
 
@@ -86,7 +86,7 @@ def slide_title() -> None:
     draw.text((64, 450), "Escalate the real work.", font=font(FONT_HEAD, 92), fill=WHITE)
     draw.text(
         (64, 600),
-        "An Agentforce agent for Service Cloud. Known-issue guides first,\n"
+        "A native Service Cloud triage backend. Known-issue guides first,\n"
         "one Case on the right queue, an SLA clock, and an audit trail\n"
         "that can prove deflection.",
         font=font(FONT_BODY, 34),

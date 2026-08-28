@@ -1,162 +1,171 @@
+/**
+ * Behaviour coverage for ITDeskTicketUpdate: appending student detail to an open ticket,
+ * refusing another student's ticket, and refusing a closed one.
+ *
+ * Failure modes live in ITDeskNegativePathTest; 200-record batches live in ITDeskBulkTest.
+ */
 @IsTest
 private class ITDeskTicketUpdateTest {
-    private static final String TEST_QUEUE_NETWORK = 'CIT_Test_Network';
-    private static final String TEST_QUEUE_GENERAL = 'CIT_Test_General';
-
     @TestSetup
-    static void setupTestQueues() {
-        System.runAs(new User(Id = UserInfo.getUserId())) {
-            ensureQueue(TEST_QUEUE_NETWORK, 'CIT Test Network');
-            ensureQueue(TEST_QUEUE_GENERAL, 'CIT Test General');
-        }
+    static void setupQueues() {
+        ITDeskTestFactory.createTestQueues();
     }
 
     @IsTest
-    static void addUpdate_byCaseNumberAndStudentId() {
-        useTestQueueMap();
+    static void addUpdate_appendsDetailByCaseNumberOrByStudentId() {
+        ITDeskTestFactory.useTestRouting();
         List<ITDeskTicketEscalation.EscalationResult> created = ITDeskTicketEscalation.escalate(
             new List<ITDeskTicketEscalation.EscalationRequest>{ newEscalation('S92000001') }
         );
 
-        ITDeskTicketUpdate.UpdateRequest byNumber = new ITDeskTicketUpdate.UpdateRequest();
-        byNumber.caseNumber = created[0].caseNumber;
-        byNumber.studentId = 'S92000001';
-        byNumber.updateDetails = 'The outage is in Residence Hall B, room 214.';
-
-        ITDeskTicketUpdate.UpdateRequest byStudent = new ITDeskTicketUpdate.UpdateRequest();
-        byStudent.studentId = 'S92000001';
-        byStudent.updateDetails = 'Error text: DNS_PROBE_FINISHED_NXDOMAIN';
-
         Test.startTest();
         List<ITDeskTicketUpdate.UpdateResult> results = ITDeskTicketUpdate.addUpdate(
-            new List<ITDeskTicketUpdate.UpdateRequest>{ byNumber, byStudent }
+            new List<ITDeskTicketUpdate.UpdateRequest>{
+                ITDeskTestFactory.ticketUpdate(
+                    created[0].caseNumber,
+                    'S92000001',
+                    'The outage is in Residence Hall B, room 214.'
+                ),
+                ITDeskTestFactory.ticketUpdate(
+                    null,
+                    'S92000001',
+                    'Error text: DNS_PROBE_FINISHED_NXDOMAIN'
+                )
+            }
         );
         Test.stopTest();
 
-        Assert.isTrue(results[0].isSuccess);
+        Assert.isTrue(results[0].isSuccess, 'A Case Number plus a matching Student ID must be accepted.');
         Assert.areEqual(created[0].caseId, results[0].caseId);
-        Assert.isTrue(results[1].isSuccess);
+        Assert.isTrue(results[0].message.contains(created[0].caseNumber), 'The caller must confirm the number.');
+        Assert.isTrue(results[1].isSuccess, 'A Student ID alone must reach their only open ticket.');
+        Assert.areEqual(created[0].caseId, results[1].caseId);
+
+        List<CaseComment> comments = [
+            SELECT CommentBody, IsPublished
+            FROM CaseComment
+            WHERE ParentId = :created[0].caseId
+        ];
         Assert.areEqual(
             3,
-            [SELECT COUNT() FROM CaseComment WHERE ParentId = :created[0].caseId],
-            'Escalate writes one comment; the two updates should add two more.'
+            comments.size(),
+            'Escalation writes one comment; the two updates should add two more.'
+        );
+        for (CaseComment comment : comments) {
+            Assert.isTrue(comment.IsPublished, 'Updates must be visible to the student, not internal-only.');
+        }
+        Assert.areEqual(
+            2,
+            [
+                SELECT COUNT()
+                FROM Campus_IT_Interaction__c
+                WHERE Outcome__c = :ITDeskAuditService.OUTCOME_UPDATED
+            ],
+            'Each accepted update must leave one audit row.'
         );
     }
 
     @IsTest
-    static void addUpdate_rejectsMismatchAndMissingInputs() {
-        useTestQueueMap();
+    static void addUpdate_refusesToCommentOnAnotherStudentsTicket() {
+        ITDeskTestFactory.useTestRouting();
         List<ITDeskTicketEscalation.EscalationResult> created = ITDeskTicketEscalation.escalate(
             new List<ITDeskTicketEscalation.EscalationRequest>{ newEscalation('S92000002') }
         );
 
-        ITDeskTicketUpdate.UpdateRequest mismatch = new ITDeskTicketUpdate.UpdateRequest();
-        mismatch.caseNumber = created[0].caseNumber;
-        mismatch.studentId = 'S99999999';
-        mismatch.updateDetails = 'Should not attach to another student.';
-
-        ITDeskTicketUpdate.UpdateRequest missing = new ITDeskTicketUpdate.UpdateRequest();
-        missing.updateDetails = 'No identifiers';
-
-        ITDeskTicketUpdate.UpdateRequest unknown = new ITDeskTicketUpdate.UpdateRequest();
-        unknown.studentId = 'S00000000';
-        unknown.updateDetails = 'No ticket';
-
         Test.startTest();
         List<ITDeskTicketUpdate.UpdateResult> results = ITDeskTicketUpdate.addUpdate(
-            new List<ITDeskTicketUpdate.UpdateRequest>{ mismatch, missing, unknown, null }
-        );
-        List<ITDeskTicketUpdate.UpdateResult> empty = ITDeskTicketUpdate.addUpdate(
-            new List<ITDeskTicketUpdate.UpdateRequest>()
+            new List<ITDeskTicketUpdate.UpdateRequest>{
+                ITDeskTestFactory.ticketUpdate(
+                    created[0].caseNumber,
+                    'S99999999',
+                    'Should not attach to another student.'
+                )
+            }
         );
         Test.stopTest();
 
         Assert.isFalse(results[0].isSuccess);
-        Assert.isTrue(results[0].message.contains('does not match'));
-        Assert.isFalse(results[1].isSuccess);
-        Assert.isFalse(results[2].isSuccess);
-        Assert.isFalse(results[3].isSuccess);
-        Assert.areEqual(0, empty.size());
+        Assert.isTrue(
+            results[0].message.contains('does not match'),
+            'The caller must be told the identifiers disagree, not that the ticket is missing.'
+        );
+        Assert.isTrue(
+            results[0].nextSteps.contains('another student'),
+            'The guidance must be explicit about not writing to someone else\'s ticket.'
+        );
         Assert.areEqual(
             1,
             [SELECT COUNT() FROM CaseComment WHERE ParentId = :created[0].caseId],
-            'Failed updates must not add comments beyond the original escalation note.'
+            'Only the original escalation comment may exist.'
         );
     }
 
     @IsTest
-    static void addUpdate_rejectsClosedTicket() {
-        useTestQueueMap();
+    static void addUpdate_refusesAClosedTicketAndAsksForANewOne() {
+        ITDeskTestFactory.useTestRouting();
         List<ITDeskTicketEscalation.EscalationResult> created = ITDeskTicketEscalation.escalate(
             new List<ITDeskTicketEscalation.EscalationRequest>{ newEscalation('S92000003') }
         );
-        List<CaseStatus> closedStatuses = [
-            SELECT MasterLabel
-            FROM CaseStatus
-            WHERE IsClosed = TRUE
-            LIMIT 1
-        ];
-        Assert.isFalse(closedStatuses.isEmpty(), 'Org must have at least one closed Case status.');
-        update new Case(Id = created[0].caseId, Status = closedStatuses[0].MasterLabel);
-
-        ITDeskTicketUpdate.UpdateRequest request = new ITDeskTicketUpdate.UpdateRequest();
-        request.caseNumber = created[0].caseNumber;
-        request.updateDetails = 'Still broken after close.';
+        update new Case(Id = created[0].caseId, Status = ITDeskTestFactory.closedCaseStatus());
 
         Test.startTest();
         List<ITDeskTicketUpdate.UpdateResult> results = ITDeskTicketUpdate.addUpdate(
-            new List<ITDeskTicketUpdate.UpdateRequest>{ request }
+            new List<ITDeskTicketUpdate.UpdateRequest>{
+                ITDeskTestFactory.ticketUpdate(created[0].caseNumber, null, 'Still broken after close.')
+            }
         );
         Test.stopTest();
 
         Assert.isFalse(results[0].isSuccess);
-        Assert.isTrue(results[0].nextSteps.contains('escalate a new'));
+        Assert.areEqual(created[0].caseId, results[0].caseId, 'The caller still needs to know which ticket.');
+        Assert.isTrue(
+            results[0].nextSteps.contains('escalate a new'),
+            'A closed ticket must send the caller to a new escalation, not a silent no-op.'
+        );
         Assert.areEqual(
             1,
-            [SELECT COUNT() FROM CaseComment WHERE ParentId = :created[0].caseId]
+            [SELECT COUNT() FROM CaseComment WHERE ParentId = :created[0].caseId],
+            'A closed ticket must not receive new comments.'
+        );
+    }
+
+    @IsTest
+    static void addUpdate_recordsTheStudentIdInTheCommentBody() {
+        ITDeskTestFactory.useTestRouting();
+        List<ITDeskTicketEscalation.EscalationResult> created = ITDeskTicketEscalation.escalate(
+            new List<ITDeskTicketEscalation.EscalationRequest>{ newEscalation('S92000004') }
+        );
+
+        Test.startTest();
+        ITDeskTicketUpdate.addUpdate(
+            new List<ITDeskTicketUpdate.UpdateRequest>{
+                ITDeskTestFactory.ticketUpdate(created[0].caseNumber, 'S92000004', 'It also fails on ethernet.')
+            }
+        );
+        Test.stopTest();
+
+        List<CaseComment> comments = [
+            SELECT CommentBody
+            FROM CaseComment
+            WHERE ParentId = :created[0].caseId AND CommentBody LIKE '%ethernet%'
+        ];
+        Assert.areEqual(1, comments.size(), 'The update text must reach the Case.');
+        Assert.isTrue(
+            comments[0].CommentBody.contains('Student update via Campus IT triage'),
+            'A technician must be able to tell a triage-sourced comment from a colleague\'s note.'
+        );
+        Assert.isTrue(
+            comments[0].CommentBody.contains('S92000004'),
+            'The comment must record which student supplied the detail.'
         );
     }
 
     private static ITDeskTicketEscalation.EscalationRequest newEscalation(String studentId) {
-        ITDeskTicketEscalation.EscalationRequest request = new ITDeskTicketEscalation.EscalationRequest();
-        request.studentId = studentId;
-        request.issueDescription = 'Campus WiFi is unavailable in the library.';
-        request.urgency = 'High';
-        request.category = 'Network';
-        return request;
-    }
-
-    private static void useTestQueueMap() {
-        ITDeskRoutingService.useCustomMetadataRouting = false;
-        ITDeskRoutingService.metadataOverrides = null;
-        ITDeskRoutingService.defaultQueueDeveloperName = TEST_QUEUE_GENERAL;
-        ITDeskRoutingService.categoryKeywordToQueueDevName = new Map<String, String>{
-            'network' => TEST_QUEUE_NETWORK,
-            'wifi' => TEST_QUEUE_NETWORK
-        };
-    }
-
-    private static void ensureQueue(String developerName, String name) {
-        List<Group> existing = [
-            SELECT Id
-            FROM Group
-            WHERE Type = 'Queue' AND DeveloperName = :developerName
-            LIMIT 1
-        ];
-        Group queue = existing.isEmpty()
-            ? new Group(Name = name, DeveloperName = developerName, Type = 'Queue')
-            : existing[0];
-        if (existing.isEmpty()) {
-            insert queue;
-        }
-        if (
-            [
-                SELECT COUNT()
-                FROM QueueSobject
-                WHERE QueueId = :queue.Id AND SobjectType = 'Case'
-            ] == 0
-        ) {
-            insert new QueueSobject(QueueId = queue.Id, SobjectType = 'Case');
-        }
+        return ITDeskTestFactory.escalation(
+            studentId,
+            'Campus WiFi is unavailable in the library.',
+            'High',
+            'Network'
+        );
     }
 }

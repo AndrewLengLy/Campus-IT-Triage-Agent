@@ -1,17 +1,20 @@
-# Salesforce CLI source tracking / deploy exclusions
+# Metadata the Salesforce CLI should never deploy or retrieve from force-app.
 # https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
 
-package.xml
-
-# LWC tooling
-**/jsconfig.json
-**/.eslintrc.json
-**/__tests__/**
-
-# Local CLI caches (never deploy)
+# Local CLI state and caches
 .sf/
 .sfdx/
 .localdevserver/
 
-# OS
-.DS_Store
+# Node and Jest tooling that lives beside LWC source
+**/jsconfig.json
+**/.eslintrc.json
+**/__tests__/**
+**/node_modules/**
+
+# Profiles are org-specific. This project ships access as a permission set instead, so a
+# retrieve must not drag a profile into source control.
+**/profiles/**
+
+# OS noise
+**/.DS_Store

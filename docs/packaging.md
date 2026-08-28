@@ -7,8 +7,8 @@ Unmanaged packages are a one-time drop. After install, the subscriber owns and c
 ## Before you package
 
 1. Deploy this repo to a **Developer Edition** org you control (not a scratch org you will throw away).
-2. Run the Apex tests listed in the README. Coverage must stay at or above 75%.
-3. Assign **Campus IT Triage Agent** and run `scripts/apex/createDemoData.apex` so you can verify the app before upload.
+2. Run `sf apex run test --test-level RunLocalTests --code-coverage`. Coverage must stay at or above 75%.
+3. Assign **Campus IT Triage Agent** and run `scripts/apex/seedSampleData.apex` so you can verify the app before upload.
 4. Confirm there are no hardcoded record IDs and no Connected Apps or secrets (this repo has none).
 
 ## Create and upload
@@ -49,13 +49,12 @@ Sandbox / Trailhead Playground login uses `https://test.salesforce.com/packaging
 
 These do **not** travel with the package and must be done in the subscriber org:
 
-1. Assign the **Campus IT Triage Agent** permission set to the running user (and to the Agentforce user if the org has Agentforce).
+1. Assign the **Campus IT Triage Agent** permission set to the user the actions run as.
 2. App Launcher → **Campus IT**.
 3. Assign the **Campus IT Case** page layout and compact layout on Case (optional, recommended for demos).
-4. Run `sf apex run --file scripts/apex/createDemoData.apex` or create the three demo Contacts by hand.
-5. If the org has Agentforce: create the agent, add the five Apex actions, paste [`agent-builder-topic.md`](agent-builder-topic.md).
+4. Run `sf apex run --file scripts/apex/seedSampleData.apex` to seed the sample students and tickets.
 
-Agentforce configuration (persona, topic, utterances) is org metadata that this repo does not ship. The Apex actions and technician app work without it.
+Optional: an org with Agentforce enabled can expose the five invocable actions to a topic using [`agent-builder-topic.md`](agent-builder-topic.md). That configuration is org metadata this repo does not ship, and the actions and technician app work without it.
 
 ## Why this repo is not a managed package
 

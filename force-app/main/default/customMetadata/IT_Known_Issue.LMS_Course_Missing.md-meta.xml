@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>LMS Course Missing</label>
+    <protected>false</protected>
+    <values>
+        <field>Category__c</field>
+        <value xsi:type="xsd:string">Software</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Keywords__c</field>
+        <value xsi:type="xsd:string">lms,canvas,blackboard,moodle,course,enrolment,enrollment</value>
+    </values>
+    <values>
+        <field>Requires_Escalation__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Resolution_Steps__c</field>
+        <value xsi:type="xsd:string">1. Confirm the course start date has passed. Courses stay hidden until the instructor publishes them.
+2. Check the student record shows an active enrolment for the term.
+3. Sign out of the LMS completely and sign back in so the enrolment sync runs.
+4. Escalate if the enrolment is active and the course is still missing after one hour.</value>
+    </values>
+    <values>
+        <field>Title__c</field>
+        <value xsi:type="xsd:string">A course is missing from the LMS</value>
+    </values>
+</CustomMetadata>

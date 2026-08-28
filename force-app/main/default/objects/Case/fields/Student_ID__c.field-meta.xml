@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Student_ID__c</fullName>
-    <description>Campus student identifier captured by the Agentforce triage agent when escalating an IT issue.</description>
+    <description>Campus student identifier captured by Campus IT triage when escalating an IT issue.</description>
     <externalId>false</externalId>
     <label>Student ID</label>
     <length>40</length>
