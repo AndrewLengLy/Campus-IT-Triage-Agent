@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>Append-only audit trail of Campus IT Triage Agent actions for operations and risk review.</description>
+    <description>Append-only audit trail of Campus IT triage actions for operations and risk review. Edits and deletes are blocked by CampusITInteractionGuard.</description>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>

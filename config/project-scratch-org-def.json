@@ -1,7 +1,7 @@
 {
   "orgName": "Campus IT Triage Agent",
   "edition": "Developer",
-  "features": ["EnableSetPasswordInApi"],
+  "features": ["ServiceCloud", "EnableSetPasswordInApi"],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true

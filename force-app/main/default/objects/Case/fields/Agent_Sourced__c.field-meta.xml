@@ -2,8 +2,8 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Agent_Sourced__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>True when the Campus IT Triage Agent created this Case.</description>
-    <label>Agent Sourced</label>
+    <description>True when Campus IT triage created this Case, rather than a walk-up or an email-to-case.</description>
+    <label>Triage Sourced</label>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>
     <type>Checkbox</type>

@@ -1,7 +1,7 @@
 /**
- * Agentforce action that searches campus IT known-issue articles before a Case
- * is created. Atlas should call this first; escalate only when there is no match
- * or Requires Escalation is true and first-aid steps were already tried.
+ * Invocable action that searches campus IT known-issue articles before a Case is
+ * created. Callers run this first; escalate only when there is no match, or when
+ * Requires Escalation is true and the first-aid steps were already tried.
  */
 public with sharing class ITDeskSelfService {
     @TestVisible

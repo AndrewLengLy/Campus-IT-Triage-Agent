@@ -1,6 +1,6 @@
 # Demo script
 
-About eight minutes. Use a Developer org after deploy, permission set assignment, and `scripts/apex/createDemoData.apex`.
+About eight minutes. Use an org seeded by `./scripts/setup-scratch-org.sh`, or by a deploy plus `scripts/apex/seedSampleData.apex`.
 
 Demo students:
 
@@ -12,9 +12,9 @@ Demo students:
 
 ## 1. Technician workspace (45 seconds)
 
-App Launcher → **Campus IT**. Show **Campus IT Agent Cases** and **Campus IT Interactions Today**.
+App Launcher → **Campus IT**. Show **Campus IT Triage Cases** and **Campus IT Interactions Today**.
 
-Say: the agent is not a chatbot bolted onto email. It writes Cases technicians already know how to work, and it writes an audit row for every action so the desk can measure deflection.
+Say: this is not a chatbot bolted onto email. It writes Cases technicians already know how to work, and an audit row for every action, so the desk can measure deflection.
 
 ## 2. Self-service first (90 seconds)
 
@@ -38,7 +38,7 @@ Read back the Case Number. Open the Case:
 
 - Owner is the Hardware queue
 - Priority is High
-- **Agent Sourced** is checked
+- **Triage Sourced** is checked
 - **First Response Due** is about four hours out
 - **Self Service Article** is filled in
 - A published Case Comment is on the record
@@ -66,7 +66,7 @@ In preview, as a supervisor or as a student asking whether the desk is backed up
 
 > How busy is the Campus IT desk right now?
 
-**Get Campus IT Operations Snapshot** should speak open agent-sourced count, high-priority count, oldest wait, and today's deflection rate.
+**Get Campus IT Operations Snapshot** should speak open triage-sourced count, high-priority count, oldest wait, and today's deflection rate.
 
 Point at the formula: matches ÷ (matches + new tickets). Reused tickets do not count as new volume.
 

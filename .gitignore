@@ -32,7 +32,3 @@ Thumbs.db
 !.env.example
 *.key
 authFile.json
-
-# Regenerated demo frames and raw Playwright captures
-docs/demo/frames/
-docs/demo/recordings/

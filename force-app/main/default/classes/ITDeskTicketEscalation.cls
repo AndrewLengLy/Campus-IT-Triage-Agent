@@ -1,8 +1,10 @@
 /**
- * Agentforce-callable action that escalates a student IT issue to a Service Cloud Case.
+ * Invocable action that escalates a student IT issue to a Service Cloud Case.
  *
- * Atlas binds conversation slots to EscalationRequest fields via @InvocableVariable
- * labels/descriptions. Keep those strings in sync with the custom action in Agent Builder.
+ * The action is the interface to the triage backend: Flow, Process Builder, REST
+ * (`/services/data/vXX.X/actions/custom/apex/...`), and anonymous Apex all call it the
+ * same way. Inputs and outputs are declared with @InvocableVariable so any caller gets
+ * typed, labelled parameters without a bespoke wrapper.
  *
  * Queue routing and Contact/open-Case lookups live in ITDeskRoutingService so admins
  * can change category maps in Custom Metadata without a code deploy.
@@ -14,7 +16,7 @@ public with sharing class ITDeskTicketEscalation {
     private static final Integer SUBJECT_MAX_LENGTH = 255;
 
     /**
-     * Inputs Atlas extracts from the student conversation.
+     * Inputs the caller supplies for one escalation.
      */
     public class EscalationRequest {
         @InvocableVariable(
@@ -57,7 +59,7 @@ public with sharing class ITDeskTicketEscalation {
 
         @InvocableVariable(
             label='Self Service Attempted'
-            description='Set true when Find Campus IT Self-Service Guide was already called in this conversation.'
+            description='Set true when Find Campus IT Self-Service Guide was already run for this student before escalating.'
         )
         public Boolean selfServiceAttempted;
 
@@ -69,7 +71,7 @@ public with sharing class ITDeskTicketEscalation {
     }
 
     /**
-     * Outputs the agent speaks back to the student.
+     * Outputs the caller reports back to the student.
      */
     public class EscalationResult {
         @InvocableVariable(
@@ -184,7 +186,7 @@ public with sharing class ITDeskTicketEscalation {
                     comments.add(
                         ITDeskRoutingService.newPublishedComment(
                             reusable.Id,
-                            buildAgentCommentBody(item.request, 'Student provided an update on an open ticket.')
+                            buildTriageCommentBody(item.request, 'Student provided an update on an open ticket.')
                         )
                     );
                     reusedFlags.add(new Case(Id = reusable.Id, Reused_Existing_Ticket__c = true));
@@ -213,7 +215,7 @@ public with sharing class ITDeskTicketEscalation {
                         comments.add(
                             ITDeskRoutingService.newPublishedComment(
                                 created.Id,
-                                buildAgentCommentBody(item.request, 'Escalated by the Campus IT Triage Agent.')
+                                buildTriageCommentBody(item.request, 'Escalated by Campus IT triage.')
                             )
                         );
                     }
@@ -380,11 +382,11 @@ public with sharing class ITDeskTicketEscalation {
         if (String.isNotBlank(request.studentEmail)) {
             lines.add('Student email: ' + request.studentEmail.trim());
         }
-        lines.add('Source: Agentforce Campus IT Triage Agent');
+        lines.add('Source: Campus IT triage (Escalate Campus IT Ticket)');
         return String.join(lines, '\n');
     }
 
-    private static String buildAgentCommentBody(EscalationRequest request, String header) {
+    private static String buildTriageCommentBody(EscalationRequest request, String header) {
         List<String> lines = new List<String>{ header, '', request.issueDescription.trim() };
         if (String.isNotBlank(request.category)) {
             lines.add('Category: ' + request.category.trim());

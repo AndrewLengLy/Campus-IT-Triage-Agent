@@ -1,5 +1,5 @@
 /**
- * Append-only audit logging and SLA calculation for Campus IT agent actions.
+ * Append-only audit logging and SLA calculation for Campus IT triage actions.
  * Writes run in system mode so a missing field permission cannot drop the trail.
  * Logging never throws into the student-facing path.
  */

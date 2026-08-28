@@ -1,6 +1,6 @@
 /**
- * Agentforce-callable action that looks up an existing Campus IT Case
- * by Case Number or Student ID so the agent can report status in-chat.
+ * Invocable action that looks up an existing Campus IT Case by Case Number or
+ * Student ID so a caller can report status without opening the record.
  */
 public with sharing class ITDeskTicketStatus {
     /**

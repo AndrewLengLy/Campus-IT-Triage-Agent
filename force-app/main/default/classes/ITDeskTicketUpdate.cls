@@ -1,6 +1,6 @@
 /**
- * Agentforce action that appends a published Case Comment when a student has
- * more information for an existing Campus IT ticket.
+ * Invocable action that appends a published Case Comment when a student has more
+ * information for an existing Campus IT ticket.
  */
 public with sharing class ITDeskTicketUpdate {
     public class UpdateRequest {
@@ -197,7 +197,7 @@ public with sharing class ITDeskTicketUpdate {
 
     private static String buildCommentBody(UpdateRequest request) {
         List<String> lines = new List<String>{
-            'Student update via Campus IT Triage Agent',
+            'Student update via Campus IT triage',
             '',
             request.updateDetails.trim()
         };

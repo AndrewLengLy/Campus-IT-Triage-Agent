@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Account Provisioning</label>
+    <protected>false</protected>
+    <values>
+        <field>Category__c</field>
+        <value xsi:type="xsd:string">Account</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Keywords__c</field>
+        <value xsi:type="xsd:string">provisioning,new account,onboarding,activate,first login,no account</value>
+    </values>
+    <values>
+        <field>Requires_Escalation__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Resolution_Steps__c</field>
+        <value xsi:type="xsd:string">1. Confirm the student record is active and the enrolment has been confirmed by the registrar.
+2. Allow up to 24 hours from enrolment confirmation for the account to provision.
+3. Try the first-time sign-in flow in the campus identity portal, not the LMS.
+4. Escalate to the identity team if the account is still missing after 24 hours. Provisioning cannot be forced by the student.</value>
+    </values>
+    <values>
+        <field>Title__c</field>
+        <value xsi:type="xsd:string">New student account has not been provisioned</value>
+    </values>
+</CustomMetadata>

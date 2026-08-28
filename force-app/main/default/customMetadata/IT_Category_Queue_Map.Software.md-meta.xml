@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>Aliases__c</field>
-        <value xsi:type="xsd:string">application,license,email,outlook</value>
+        <value xsi:type="xsd:string">application,license,email,outlook,lms,canvas,blackboard,moodle</value>
     </values>
     <values>
         <field>Is_Default__c</field>

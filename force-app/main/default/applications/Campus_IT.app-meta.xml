@@ -4,7 +4,7 @@
         <headerColor>#0B5CAB</headerColor>
         <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
     </brand>
-    <description>Technician and operations workspace for Cases and audit rows produced by the Campus IT Triage Agent.</description>
+    <description>Technician and operations workspace for Cases and audit rows produced by Campus IT triage.</description>
     <formFactors>Large</formFactors>
     <formFactors>Small</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
