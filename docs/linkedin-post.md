@@ -7,8 +7,9 @@ show up as literal characters in the feed.
 ## Post
 
 Opens on the start of term and names `eduroam` — the specific that signals
-you've actually worked a campus desk rather than read about one. Understated and
-observational; the argument arrives after the observation.
+you've actually worked a campus desk rather than read about one. Short lines and
+hard stops from there: the claims are left to stand on their own without
+hedging, and the demo beats are stated as facts rather than narrated.
 
 The first line is 140 characters, which keeps it inside LinkedIn's mobile
 "…see more" cut (~140) so it reads whole before anyone expands the post. If you
@@ -17,50 +18,6 @@ edit that line, keep it under that.
 **The opener has a shelf life.** It reads as current for the first couple of
 weeks of the semester and stale after. Post it while term is starting, or swap
 the first line.
-
-```text
-The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
-
-None of it is hard. It's just constant. And the student whose laptop actually died the night before an exam is sitting in that same queue, behind all of it.
-
-That ordering problem is the part I wanted to work on, so I built a triage agent on Salesforce. Here's 65 seconds of it — no sound, captions are on screen.
-
-The part I care about most is what it doesn't do.
-
-A student reports WiFi dropping in their residence hall. It hands back the reconnect steps and opens nothing. No ticket. That's a deflection, and it gets counted rather than guessed at.
-
-Another student's laptop won't power on before an exam. It walks through first aid, then opens exactly one Case on the Hardware queue — High priority, four-hour response clock, contact linked.
-
-Then that same student messages again about that same laptop. It reuses the existing ticket instead of opening a second one. That single behaviour is most of what makes support bots infuriating.
-
-Under the hood: five Apex actions Agentforce can call, with routing rules and SLA hours in Custom Metadata, so a service desk lead retunes them in Setup without touching code. Every action writes an audit row that can't be edited or deleted, so the deflection number can't quietly drift.
-
-Being upfront: the video is a walkthrough of the interface, labelled as such, not a recording of a live org. The Apex, metadata, and permission set are real and deploy with the Salesforce CLI.
-
-Still learning this stack. If you've worked a campus service desk and I've got the model wrong somewhere, I'd genuinely like to hear it.
-
-Repo in the comments.
-
-#Salesforce #Agentforce #ServiceCloud #HigherEd #BuildInPublic
-```
-
-### First comment (post this immediately after)
-
-```text
-Code, architecture notes, and deploy steps:
-https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
-
-Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
-```
-
----
-
-## Alternates
-
-Same opener, different register. Both keep the walkthrough disclosure.
-
-<details>
-<summary><b>Shorter and blunter</b> — hard stops, no throat-clearing. Reads confident, can read cold.</summary>
 
 ```text
 The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
@@ -90,6 +47,50 @@ The video is a walkthrough of the interface, labelled on screen, not a live org.
 Repo in the comments.
 
 #Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
+```
+
+### First comment (post this immediately after)
+
+```text
+Code, architecture notes, and deploy steps:
+https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
+
+Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
+```
+
+---
+
+## Alternates
+
+Same opener, different register. Both keep the walkthrough disclosure.
+
+<details>
+<summary><b>Conversational</b> — first person, ends on a question to service-desk people. Invites replies rather than daring people to poke holes.</summary>
+
+```text
+The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
+
+None of it is hard. It's just constant. And the student whose laptop actually died the night before an exam is sitting in that same queue, behind all of it.
+
+That ordering problem is the part I wanted to work on, so I built a triage agent on Salesforce. Here's 65 seconds of it — no sound, captions are on screen.
+
+The part I care about most is what it doesn't do.
+
+A student reports WiFi dropping in their residence hall. It hands back the reconnect steps and opens nothing. No ticket. That's a deflection, and it gets counted rather than guessed at.
+
+Another student's laptop won't power on before an exam. It walks through first aid, then opens exactly one Case on the Hardware queue — High priority, four-hour response clock, contact linked.
+
+Then that same student messages again about that same laptop. It reuses the existing ticket instead of opening a second one. That single behaviour is most of what makes support bots infuriating.
+
+Under the hood: five Apex actions Agentforce can call, with routing rules and SLA hours in Custom Metadata, so a service desk lead retunes them in Setup without touching code. Every action writes an audit row that can't be edited or deleted, so the deflection number can't quietly drift.
+
+Being upfront: the video is a walkthrough of the interface, labelled as such, not a recording of a live org. The Apex, metadata, and permission set are real and deploy with the Salesforce CLI.
+
+Still learning this stack. If you've worked a campus service desk and I've got the model wrong somewhere, I'd genuinely like to hear it.
+
+Repo in the comments.
+
+#Salesforce #Agentforce #ServiceCloud #HigherEd #BuildInPublic
 ```
 
 </details>
