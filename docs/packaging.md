@@ -8,7 +8,7 @@ Unmanaged packages are a one-time drop. After install, the subscriber owns and c
 
 1. Deploy this repo to a **Developer Edition** org you control (not a scratch org you will throw away).
 2. Run `sf apex run test --test-level RunLocalTests --code-coverage`. Coverage must stay at or above 75%.
-3. Assign **Campus IT Triage Agent** and run `scripts/apex/seedSampleData.apex` so you can verify the app before upload.
+3. Assign **Campus IT Triage** and run `scripts/apex/seedSampleData.apex` so you can verify the app before upload.
 4. Confirm there are no hardcoded record IDs and no Connected Apps or secrets (this repo has none).
 
 ## Create and upload
@@ -49,7 +49,7 @@ Sandbox / Trailhead Playground login uses `https://test.salesforce.com/packaging
 
 These do **not** travel with the package and must be done in the subscriber org:
 
-1. Assign the **Campus IT Triage Agent** permission set to the user the actions run as.
+1. Assign the **Campus IT Triage** permission set to the user the actions run as.
 2. App Launcher → **Campus IT**.
 3. Assign the **Campus IT Case** page layout and compact layout on Case (optional, recommended for demos).
 4. Run `sf apex run --file scripts/apex/seedSampleData.apex` to seed the sample students and tickets.

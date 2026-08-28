@@ -436,7 +436,7 @@ private class ITDeskNegativePathTest {
             'Deflection must be null with no volume, not a misleading zero percent.'
         );
         Assert.areEqual('None', results[0].queueBreakdown);
-        Assert.isTrue(results[0].message.contains('No agent-sourced tickets are waiting'));
+        Assert.isTrue(results[0].message.contains('No triage-sourced tickets are waiting'));
     }
 
     @IsTest

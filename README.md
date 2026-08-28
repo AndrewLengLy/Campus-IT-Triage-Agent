@@ -284,7 +284,7 @@ three are editable in **Setup → Custom Metadata Types** without a deploy.
 > Not yet captured. These come from a deployed org, so run `./scripts/setup-scratch-org.sh` and
 > take them from the seeded data rather than from a mock. The four worth having:
 >
-> 1. **Campus IT app → Campus IT Agent Cases** — the seeded tickets across all five queues, with
+> 1. **Campus IT app → Campus IT Triage Cases** — the seeded tickets across all five queues, with
 >    First Response Due and IT Category visible in the list view.
 > 2. **Jordan Chen's Hardware Case** — highlights panel showing Student ID, IT Category, Self
 >    Service Article, and the first-response clock, with the published Case Comment below.

@@ -205,7 +205,7 @@ public class ITDeskTestFactory {
     }
 
     /**
-     * Inserts open agent-sourced Cases directly, bypassing the invocable actions so bulk
+     * Inserts open triage-sourced Cases directly, bypassing the invocable actions so bulk
      * lookup tests start from a known fixture rather than from escalation side effects.
      * The returned list is ordered by seeded student ID, so index i belongs to bulkStudentId(i).
      */

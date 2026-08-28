@@ -9,8 +9,8 @@
 private class ITDeskOperationsSnapshotTest {
     @IsTest
     static void getSnapshot_reportsOpenLoadOldestWaitAndDeflection() {
-        Case waiting = agentSourcedCase('Hardware', 'High', 'S10000002');
-        Case medium = agentSourcedCase('Network', 'Medium', 'S10000001');
+        Case waiting = triageSourcedCase('Hardware', 'High', 'S10000002');
+        Case medium = triageSourcedCase('Network', 'Medium', 'S10000001');
         insert new List<Case>{ waiting, medium };
         waiting = [SELECT Id, CaseNumber FROM Case WHERE Id = :waiting.Id];
         Test.setCreatedDate(waiting.Id, Datetime.now().addHours(-6));
@@ -54,7 +54,7 @@ private class ITDeskOperationsSnapshotTest {
             result.deflectionRate,
             'Two matches against two matches plus one new ticket is 66.7 percent deflection.'
         );
-        Assert.isTrue(result.message.contains('open agent-sourced tickets'));
+        Assert.isTrue(result.message.contains('open triage-sourced tickets'));
         Assert.isTrue(String.isNotBlank(result.queueBreakdown));
         Assert.areEqual(
             1,
@@ -82,9 +82,9 @@ private class ITDeskOperationsSnapshotTest {
             LIMIT 1
         ];
 
-        Case onNetwork = agentSourcedCase('Network', 'Medium', 'S10000001');
+        Case onNetwork = triageSourcedCase('Network', 'Medium', 'S10000001');
         onNetwork.OwnerId = networkQueue.Id;
-        Case onHardware = agentSourcedCase('Hardware', 'High', 'S10000002');
+        Case onHardware = triageSourcedCase('Hardware', 'High', 'S10000002');
         onHardware.OwnerId = hardwareQueue.Id;
         insert new List<Case>{ onNetwork, onHardware };
 
@@ -123,7 +123,7 @@ private class ITDeskOperationsSnapshotTest {
 
     @IsTest
     static void getSnapshot_labelsTicketsOutsideTheCampusItQueuesSeparately() {
-        Case ownedByAUser = agentSourcedCase('General', 'Medium', 'S10000001');
+        Case ownedByAUser = triageSourcedCase('General', 'Medium', 'S10000001');
         ownedByAUser.OwnerId = UserInfo.getUserId();
         insert ownedByAUser;
 
@@ -141,7 +141,7 @@ private class ITDeskOperationsSnapshotTest {
         );
     }
 
-    private static Case agentSourcedCase(String category, String priority, String studentId) {
+    private static Case triageSourcedCase(String category, String priority, String studentId) {
         return new Case(
             Subject = 'Campus IT: ' + category + ' — seeded for the operations snapshot',
             Origin = 'Web',

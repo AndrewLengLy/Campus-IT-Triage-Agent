@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Self_Service_Attempted__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>True when the agent tried a known-issue guide before escalating.</description>
+    <description>True when a known-issue guide was tried before escalating.</description>
     <label>Self Service Attempted</label>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>false</trackHistory>

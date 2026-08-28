@@ -60,7 +60,7 @@ Use the **Campus IT Interactions Today** list view for a shift review. Open a Ca
 App Launcher → **Campus IT**
 
 - **Campus IT Open Cases** — all open tickets, including first-response due
-- **Campus IT Agent Cases** — open tickets the triage backend created
+- **Campus IT Triage Cases** — open tickets the triage backend created
 - **Campus IT Interactions Today** — every action taken on this shift
 
 Assign the **Campus IT Case** page layout and compact layout on Case if Student ID, category, and first-response due should show in highlights.
@@ -77,4 +77,4 @@ The rule callers should follow, whatever the front end:
 
 ## Permission set
 
-Assign **Campus IT Triage Agent** to the user the actions run as, after every deploy. It covers the five Apex actions, Case create/edit, Contact read, and Interaction create/read.
+Assign the **Campus IT Triage** permission set to the user the actions run as, after every deploy. It covers the five Apex actions, Case create/edit, Contact read, and Interaction create/read.

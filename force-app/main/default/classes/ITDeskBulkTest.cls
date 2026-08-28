@@ -431,7 +431,7 @@ private class ITDeskBulkTest {
             Assert.areEqual(
                 BATCH,
                 results[i].openTicketCount,
-                'Snapshot ' + i + ' must count every open agent-sourced ticket, filtered or not.'
+                'Snapshot ' + i + ' must count every open triage-sourced ticket, filtered or not.'
             );
         }
         Assert.areEqual(

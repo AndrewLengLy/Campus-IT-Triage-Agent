@@ -13,22 +13,22 @@ public with sharing class ITDeskOperationsSnapshot {
     }
 
     public class SnapshotResult {
-        @InvocableVariable(label='Open Ticket Count' description='Open Cases sourced by the agent, optionally filtered by queue.')
+        @InvocableVariable(label='Open Ticket Count' description='Open Cases created by Campus IT triage, optionally filtered by queue.')
         public Integer openTicketCount;
 
-        @InvocableVariable(label='High Priority Open' description='Open High-priority agent-sourced Cases.')
+        @InvocableVariable(label='High Priority Open' description='Open High-priority triage-sourced Cases.')
         public Integer highPriorityOpen;
 
-        @InvocableVariable(label='Oldest Case Number' description='Case Number of the oldest open agent-sourced ticket.')
+        @InvocableVariable(label='Oldest Case Number' description='Case Number of the oldest open triage-sourced ticket.')
         public String oldestCaseNumber;
 
-        @InvocableVariable(label='Oldest Wait Hours' description='Whole hours the oldest open agent-sourced ticket has been waiting.')
+        @InvocableVariable(label='Oldest Wait Hours' description='Whole hours the oldest open triage-sourced ticket has been waiting.')
         public Integer oldestWaitHours;
 
         @InvocableVariable(label='Self Service Matches Today' description='Known-issue matches logged today.')
         public Integer selfServiceMatchesToday;
 
-        @InvocableVariable(label='Escalations Today' description='New tickets the agent created today.')
+        @InvocableVariable(label='Escalations Today' description='New tickets triage created today.')
         public Integer escalationsToday;
 
         @InvocableVariable(label='Deflection Rate' description='Self-service matches as a percent of matches plus new escalations today. Null when there is no volume.')
@@ -46,7 +46,7 @@ public with sharing class ITDeskOperationsSnapshot {
 
     @InvocableMethod(
         label='Get Campus IT Operations Snapshot'
-        description='Returns current Campus IT desk load: open agent-sourced tickets, oldest wait, high-priority volume, and today\'s self-service deflection rate. Use when a supervisor asks how the desk is doing, or when a student asks whether the service desk is backed up. Do not use this to create or update a ticket.'
+        description='Returns current Campus IT desk load: open triage-sourced tickets, oldest wait, high-priority volume, and today\'s self-service deflection rate. Use when a supervisor asks how the desk is doing, or when a student asks whether the service desk is backed up. Do not use this to create or update a ticket.'
         category='Campus IT'
     )
     public static List<SnapshotResult> getSnapshot(List<SnapshotRequest> requests) {
@@ -155,7 +155,7 @@ public with sharing class ITDeskOperationsSnapshot {
     private static String buildMessage(SnapshotResult result, String filter) {
         String scope = filter == null ? 'Campus IT' : filter;
         String wait = result.oldestCaseNumber == null
-            ? 'No agent-sourced tickets are waiting.'
+            ? 'No triage-sourced tickets are waiting.'
             : 'Oldest ticket is #' +
                 result.oldestCaseNumber +
                 ', waiting about ' +
@@ -167,7 +167,7 @@ public with sharing class ITDeskOperationsSnapshot {
         return scope +
             ' has ' +
             result.openTicketCount +
-            ' open agent-sourced tickets (' +
+            ' open triage-sourced tickets (' +
             result.highPriorityOpen +
             ' high priority). ' +
             wait +

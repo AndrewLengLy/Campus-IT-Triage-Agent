@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Keyword__c</fullName>
-    <description>Primary category keyword matched as a case-insensitive substring of the agent-supplied category.</description>
+    <description>Primary category keyword matched as a case-insensitive substring of the supplied category.</description>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
     <label>Keyword</label>
