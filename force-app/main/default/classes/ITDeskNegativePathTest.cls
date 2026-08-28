@@ -440,6 +440,23 @@ private class ITDeskNegativePathTest {
     }
 
     @IsTest
+    static void getSnapshot_treatsANullRequestAsAWholeDeskSnapshot() {
+        Test.startTest();
+        List<ITDeskOperationsSnapshot.SnapshotResult> results = ITDeskOperationsSnapshot.getSnapshot(
+            new List<ITDeskOperationsSnapshot.SnapshotRequest>{ null, ITDeskTestFactory.snapshot(null) }
+        );
+        Test.stopTest();
+
+        Assert.areEqual(2, results.size(), 'A null entry must still get a result in its own position.');
+        Assert.areEqual(
+            0,
+            results[0].openTicketCount,
+            'A null request must be read as an unfiltered snapshot rather than dropped.'
+        );
+        Assert.areEqual('None', results[0].queueBreakdown);
+    }
+
+    @IsTest
     static void getSnapshot_ignoresTicketsTheDeskDidNotSource() {
         insert new Case(
             Subject = 'Walk-up ticket logged by a technician',

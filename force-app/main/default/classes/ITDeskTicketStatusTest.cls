@@ -113,6 +113,37 @@ private class ITDeskTicketStatusTest {
     }
 
     @IsTest
+    static void checkStatus_namesTheTechnicianWhenATicketIsNoLongerOnAQueue() {
+        ITDeskTestFactory.useTestRouting();
+        List<ITDeskTicketEscalation.EscalationResult> created = ITDeskTicketEscalation.escalate(
+            new List<ITDeskTicketEscalation.EscalationRequest>{
+                ITDeskTestFactory.escalation('S91000005', 'WiFi keeps dropping.', 'High', 'Network')
+            }
+        );
+        // A technician accepting the ticket takes it off the queue and onto themselves.
+        update new Case(Id = created[0].caseId, OwnerId = UserInfo.getUserId());
+
+        Test.startTest();
+        List<ITDeskTicketStatus.StatusResult> results = ITDeskTicketStatus.checkStatus(
+            new List<ITDeskTicketStatus.StatusRequest>{
+                ITDeskTestFactory.status(created[0].caseNumber, null)
+            }
+        );
+        Test.stopTest();
+
+        Assert.isTrue(results[0].isSuccess);
+        Assert.areEqual(
+            UserInfo.getName(),
+            results[0].queueName,
+            'Once a technician owns the ticket the caller must be given their name, not a stale queue.'
+        );
+        Assert.isTrue(
+            results[0].nextSteps.contains(UserInfo.getName()),
+            'The guidance must name whoever actually owns the work.'
+        );
+    }
+
+    @IsTest
     static void checkStatus_onAClosedTicketPointsTheCallerAtANewEscalation() {
         ITDeskTestFactory.useTestRouting();
         List<ITDeskTicketEscalation.EscalationResult> created = ITDeskTicketEscalation.escalate(
