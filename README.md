@@ -4,6 +4,8 @@
 [![API](https://img.shields.io/badge/API-64.0-172B4D)](sfdx-project.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3D8BFF.svg)](LICENSE)
 
+![Campus IT Service Desk Triage](docs/demo/banner.svg)
+
 A native **Service Cloud** triage backend for a university IT service desk. It tries a
 known-issue guide first, opens exactly one Case on the right queue when a human is genuinely
 needed, reuses that ticket instead of creating a duplicate, starts a first-response clock, and
@@ -291,9 +293,9 @@ three are editable in **Setup → Custom Metadata Types** without a deploy.
 > 4. **Campus IT Interactions Today** — the audit trail with a mix of Matched, Created, Updated,
 >    and Not Found outcomes.
 >
-> Earlier recorded assets under `docs/demo/` were produced before this repositioning and are not
-> linked here; see the note at the end of
-> [`ARCHITECTURE.md` → Known issues](ARCHITECTURE.md#known-issues).
+> The repo previously shipped a hand-built HTML mock of Lightning and two recordings made from
+> it. Those were removed: a mock is not evidence that the app works, and real captures from the
+> seeded org are both easier to produce and worth more to a reviewer.
 
 ---
 
@@ -311,7 +313,7 @@ force-app/main/default/
 config/             Scratch org definition
 scripts/            setup-scratch-org.sh, sample data seeder
 manifest/           package.xml for manifest-based deploys
-docs/               Operating model, packaging, walkthrough scripts
+docs/               Operating model, packaging, demo and video scripts
 ARCHITECTURE.md     Design decisions, known issues, what changes at campus scale
 ```
 
@@ -328,14 +330,6 @@ ARCHITECTURE.md     Design decisions, known issues, what changes at campus scale
   only. Interaction edit and delete are withheld.
 - Profiles are excluded in [`.forceignore`](.forceignore), so a retrieve cannot drag org-specific
   profile metadata into source control.
-
----
-
-## Optional extension
-
-An org that has Agentforce enabled can expose these five invocable actions to a topic as custom
-actions. Nothing in this repo depends on that, and the technician workspace works identically
-without it. Setup notes: [`docs/agent-builder-topic.md`](docs/agent-builder-topic.md).
 
 ---
 

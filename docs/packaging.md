@@ -54,8 +54,6 @@ These do **not** travel with the package and must be done in the subscriber org:
 3. Assign the **Campus IT Case** page layout and compact layout on Case (optional, recommended for demos).
 4. Run `sf apex run --file scripts/apex/seedSampleData.apex` to seed the sample students and tickets.
 
-Optional: an org with Agentforce enabled can expose the five invocable actions to a topic using [`agent-builder-topic.md`](agent-builder-topic.md). That configuration is org metadata this repo does not ship, and the actions and technician app work without it.
-
 ## Why this repo is not a managed package
 
 Managed packages need a Partner Business Org, a namespace, `global` invocables, and a security review before AppExchange. That is the right path for a commercial listing, not for an open-source portfolio drop. Unlocked packages (2GP) are a later option if you want versioned CLI installs without a namespace.

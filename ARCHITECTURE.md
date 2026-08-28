@@ -206,10 +206,6 @@ code; each is a decision to make, and several are one-line fixes deliberately le
 | L | **The snapshot's queue filter is a substring match on the queue label**, so a filter of "Campus IT" matches every queue, and any Case owned outside a `Campus_IT_*` queue is bucketed as "Unassigned / other". | `ITDeskOperationsSnapshot.buildSnapshot` | Surprising rather than wrong. Documented here and asserted in `ITDeskOperationsSnapshotTest`. | Filter on `DeveloperName` and take the label from the queue record. |
 | M | **The snapshot is O(requests × open tickets).** Each request re-walks the full open-ticket list. | `ITDeskOperationsSnapshot.buildSnapshot` | 200 requests over 200 tickets is 40,000 iterations, which is fine. 200 requests over 5,000 tickets is not. | Compute the breakdown once and filter the aggregate per request. |
 
-One repository item rather than a code issue: the recorded demo assets under `docs/demo/` were
-produced before this repositioning and still present the project as a conversational agent. They
-are unlinked from the README pending a re-record or removal.
-
 ---
 
 ## Extension points
@@ -299,12 +295,3 @@ the code does today so the suite stays green while the decision is open.
 
 No test uses `SeeAllData`. Test queues use `CIT_Test_*` DeveloperNames so they cannot collide
 with the packaged `Campus_IT_*` queues.
-
----
-
-## Optional extension
-
-Because the five entry points are invocable actions with labelled inputs, an org that has
-Agentforce enabled can expose them to a topic as custom actions without any change to this
-repo; nothing here depends on that, and the technician workspace works exactly the same without
-it.
