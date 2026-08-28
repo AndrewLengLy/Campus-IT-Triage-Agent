@@ -4,24 +4,70 @@ LinkedIn does not render Markdown. Everything inside the fenced blocks is plain
 text on purpose — copy it exactly. Asterisks, backticks, and `[text](url)` links
 show up as literal characters in the feed.
 
-Three variants below in different voices. Pick one, or tell me which parts of
-which to splice. They all say the same true things about the app; only the voice
-changes.
+## Post
+
+Opens on the start of term and names `eduroam` — the specific that signals
+you've actually worked a campus desk rather than read about one. Understated and
+observational; the argument arrives after the observation.
+
+The first line is 140 characters, which keeps it inside LinkedIn's mobile
+"…see more" cut (~140) so it reads whole before anyone expands the post. If you
+edit that line, keep it under that.
+
+**The opener has a shelf life.** It reads as current for the first couple of
+weeks of the semester and stale after. Post it while term is starting, or swap
+the first line.
+
+```text
+The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
+
+None of it is hard. It's just constant. And the student whose laptop actually died the night before an exam is sitting in that same queue, behind all of it.
+
+That ordering problem is the part I wanted to work on, so I built a triage agent on Salesforce. Here's 65 seconds of it — no sound, captions are on screen.
+
+The part I care about most is what it doesn't do.
+
+A student reports WiFi dropping in their residence hall. It hands back the reconnect steps and opens nothing. No ticket. That's a deflection, and it gets counted rather than guessed at.
+
+Another student's laptop won't power on before an exam. It walks through first aid, then opens exactly one Case on the Hardware queue — High priority, four-hour response clock, contact linked.
+
+Then that same student messages again about that same laptop. It reuses the existing ticket instead of opening a second one. That single behaviour is most of what makes support bots infuriating.
+
+Under the hood: five Apex actions Agentforce can call, with routing rules and SLA hours in Custom Metadata, so a service desk lead retunes them in Setup without touching code. Every action writes an audit row that can't be edited or deleted, so the deflection number can't quietly drift.
+
+Being upfront: the video is a walkthrough of the interface, labelled as such, not a recording of a live org. The Apex, metadata, and permission set are real and deploy with the Salesforce CLI.
+
+Still learning this stack. If you've worked a campus service desk and I've got the model wrong somewhere, I'd genuinely like to hear it.
+
+Repo in the comments.
+
+#Salesforce #Agentforce #ServiceCloud #HigherEd #BuildInPublic
+```
+
+### First comment (post this immediately after)
+
+```text
+Code, architecture notes, and deploy steps:
+https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
+
+Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
+```
 
 ---
 
-## Variant A — blunt and short
+## Alternates
 
-Short lines, hard stops, no throat-clearing. Reads confident. Best if you want
-the post to feel like a senior engineer stating facts. Risk: can read cold, and
-it claims some authority.
+Same opener, different register. Both keep the walkthrough disclosure.
+
+<details>
+<summary><b>Shorter and blunter</b> — hard stops, no throat-clearing. Reads confident, can read cold.</summary>
 
 ```text
-Campus IT desks don't have a ticket problem. They have a repeatability problem.
+The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
 
-Same five requests every morning. WiFi. Passwords. MFA. VPN. "Where's my ticket?"
+None of it is hard. It's just constant.
 
-Meanwhile the dead laptop that needs an actual technician sits behind all of it.
+Meanwhile the laptop that actually died before an exam sits behind all of it.
 
 Most chatbots make this worse. They guess. They open duplicates. They can't prove they deflected anything.
 
@@ -43,60 +89,20 @@ The video is a walkthrough of the interface, labelled on screen, not a live org.
 
 Repo in the comments.
 
-#Salesforce #Agentforce #ServiceCloud #Apex #ITSM
+#Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
 ```
 
----
+</details>
 
-## Variant B — conversational, building in public (recommended)
-
-First person, admits what's still being learned, ends on a real question. Best
-fit for someone early in their career shipping something ambitious: it invites
-replies instead of daring people to poke holes, and the closing line converts
-"who is this guy" into a conversation. Also the easiest to defend in comments.
+<details>
+<summary><b>Technical</b> — names the metadata types and invariants. For a developer audience; loses general readers.</summary>
 
 ```text
-I kept hearing the same thing about campus IT: it isn't that there are too many tickets, it's that they're the same tickets.
+The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
 
-WiFi. Password resets. MFA loops. "Where's my ticket?" Every single morning.
+The problem with pointing a bot at that isn't the conversation. It's that nothing downstream is auditable. Most of them guess a category, open a duplicate, and leave you no way to prove what was actually deflected.
 
-And the student whose laptop actually died before an exam? They wait behind all of it.
-
-I wanted to see if I could fix the ordering problem, so I built a triage agent on Salesforce. Here's 65 seconds of it — no sound, captions are on screen.
-
-The part I care about most is what it doesn't do.
-
-A student reports dropping WiFi. It hands back a guide and opens nothing. No ticket. That's a deflection, and it gets counted rather than guessed at.
-
-Another student's laptop won't turn on before an exam. It tries first aid, then opens exactly one Case on the Hardware queue, High priority, four-hour response clock, contact linked.
-
-Then that same student messages again about that same laptop. It reuses the ticket instead of opening a second one. That one behaviour is most of what makes support bots infuriating.
-
-Under the hood: five Apex actions Agentforce can call, with routing rules and SLA hours in Custom Metadata so a service desk lead retunes them in Setup without touching code. Every action writes an audit row that can't be edited or deleted, so the deflection number can't quietly drift.
-
-Being upfront: the video is a walkthrough of the interface, labelled as such, not a recording of a live org. The Apex, metadata, and permission set are real and deploy with the Salesforce CLI.
-
-Still learning this stack. If you've worked a service desk and I've got the model wrong somewhere, I'd genuinely like to hear it.
-
-Repo in the comments.
-
-#Salesforce #Agentforce #ServiceCloud #BuildInPublic
-```
-
----
-
-## Variant C — technical and detailed
-
-Names the metadata types and the actual invariants. Best if the audience you
-want is Salesforce developers and architects rather than a general feed. Denser,
-will lose non-technical readers, but the people it's for will trust it more.
-
-```text
-I built a Service Cloud triage agent that treats deflection as a measured number instead of a marketing claim.
-
-The problem with most service desk bots isn't the conversation. It's that nothing downstream is auditable. They guess a category, open a duplicate, and leave you no way to prove what was actually deflected.
-
-Architecture:
+So I built the triage agent as Service Cloud metadata rather than a chat layer.
 
 Five Apex invocable actions exposed to Agentforce — self-service lookup, escalation, ticket update, status check, operations snapshot. One @InvocableMethod each, List in, List out.
 
@@ -112,19 +118,12 @@ The 65-second walkthrough is attached, silent with captions. It shows the interf
 
 Repo and architecture notes in the comments.
 
-#Salesforce #Agentforce #ServiceCloud #Apex #ITSM
+#Salesforce #Agentforce #ServiceCloud #Apex #HigherEd
 ```
+
+</details>
 
 ---
-
-## First comment (post this immediately after, whichever variant you use)
-
-```text
-Code, architecture notes, and deploy steps:
-https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
-
-Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
-```
 
 ## How to post it
 
@@ -133,10 +132,12 @@ Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one per
    link posts get less reach.
 2. Keep the GitHub URL out of the post body. Put it in the first comment
    (above). A bare external link in the body suppresses distribution.
-3. The first two lines are all that shows before "…see more" on mobile, so the
-   hook has to survive alone. All three variants front-load it.
+3. Only the first line or two show before "…see more" on mobile. The opener is
+   sized to survive that cut intact.
 4. The video is silent with burned-in captions, which is what you want: LinkedIn
    autoplays muted, and most people never turn sound on.
+5. Timing: post while term is actually starting. The hook is doing real work and
+   it expires.
 
 ### Video specs
 
@@ -160,7 +161,7 @@ shows — self-service match, single escalation, ticket reuse, the operations
 snapshot — mirrors what the Apex in this repo actually does, but the frames are
 rendered from `docs/demo/app-walkthrough.html`, not from Salesforce.
 
-Every variant above keeps that disclosure. Keep it. The audience for these
+Every version above keeps that disclosure. Keep it. The audience for these
 hashtags is people who work in Salesforce every day and will recognise a
 reconstruction. Being straight about it costs nothing and is much cheaper than
 being corrected in the comments.
@@ -168,7 +169,7 @@ being corrected in the comments.
 **Want footage of the real thing?** Deploy to a Developer org (README, steps 1–5),
 then screen-record the shot list in [`video-script.md`](video-script.md). That
 gives you a genuine capture you can post without the qualifier — drop the
-disclosure sentence from whichever variant you picked.
+disclosure sentence from whichever version you picked.
 
 ## Regenerating the walkthrough
 
