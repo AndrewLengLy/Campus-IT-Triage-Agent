@@ -21,7 +21,7 @@ sign-off. Three things were added because the draft was missing them:
    claims. "A log that can't be edited afterwards" is the sentence that makes
    the deflection number believable.
 
-The first line is 133 characters, inside LinkedIn's mobile "…see more" cut
+The first line is 132 characters, inside LinkedIn's mobile "…see more" cut
 (~140). The draft's opener ran 203 and would have been chopped mid-clause, so
 "around this time" was dropped — "starting up again" already carries the timing.
 
@@ -34,23 +34,21 @@ feel off.
 weeks of term and stale after.
 
 ```text
-The regular semester is starting up again, and the IT issues I remember were things like eduroam, mandatory password resets, and MFA.
+The regular semester is starting up again, and the IT issues I remember having to go through were eduroam, password resets, and MFA.
 
-Oftentimes a high volume of people running into the same problems leads to a backlog that could have been solved with the same solution.
+Oftentimes a high volume of people running into the same problems leads to a backlog that could be solved with the same solution.
 
-So I built a Salesforce app that sorts problems by how urgent they actually are. It is Apex actions that Agentforce can call, creating real Cases on real support queues. A wifi problem is handed a known solution that sorts it in about a minute. A broken laptop before an exam is marked urgent and goes straight to support with a four hour deadline on it.
+So I built a Salesforce app that sorts problems by how fast they can potentially be solved. It is Apex actions that Agentforce can call, creating real Cases on real support queues. Where a wifi problem is handed a known solution and can get sorted out in a minute, a broken laptop moves to urgent and queues up for support immediately.
 
-It also handles the thing that usually makes a backlog worse. If the same student writes in again about the same laptop, it adds to the request they already have instead of opening a second one, so they keep their place in line.
+It also handles the things that make backlogs worse. If the same student writes in again about the same laptop issues, it adds to the request they already have instead of opening another ticket, so they can keep their position in queue.
 
-The idea is to improve ticket resolution times. Routine problems are given known solutions before queuing for support, and the person who actually needs a person can be seen sooner.
+The idea is to improve ticket resolution times. Routine problems are given known solutions before queuing for support and the person who needs specialized solutions can get recognized faster.
 
 The part I found most interesting to build was the record keeping. Every action is written to a log that can't be edited afterwards, so the desk can show how much really got resolved without support instead of estimating it.
 
-While the video walks through the interface, it isn't recorded from a live org. However the code is real, and the repo is public now if you want to read it or deploy it yourself.
+Important to note that while the video walks through the interface, it isn't recorded from a live org. However the code is real.
 
-Link is in the comments!
-
-#Salesforce #Agentforce #ServiceCloud #HigherEd
+Link to the repo is in the comments! :)
 ```
 
 ### First comment (post this immediately after)
