@@ -1,9 +1,11 @@
 import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
+import { readFile, rm } from "node:fs/promises";
+import { spawn } from "node:child_process";
 import { extname, join } from "node:path";
 import { chromium } from "playwright";
 
 const root = join(import.meta.dirname, "../../docs/demo");
+const out = join(root, "campus-it-app-recording.mp4");
 const types = {
   ".html": "text/html",
   ".svg": "image/svg+xml",
@@ -25,7 +27,11 @@ const server = createServer(async (req, res) => {
 
 await new Promise((resolve) => server.listen(8765, resolve));
 
-const browser = await chromium.launch({ headless: true });
+// CHROMIUM_PATH lets CI / sandboxes point at a preinstalled browser.
+const browser = await chromium.launch({
+  headless: true,
+  executablePath: process.env.CHROMIUM_PATH || undefined,
+});
 const context = await browser.newContext({
   viewport: { width: 1920, height: 1080 },
   deviceScaleFactor: 1,
@@ -40,7 +46,31 @@ await page.waitForSelector("body[data-demo-complete='true']", { timeout: 180000 
 await page.waitForTimeout(800);
 const video = page.video();
 await context.close();
-const videoPath = await video.path();
+const webm = await video.path();
 await browser.close();
 server.close();
-console.log(videoPath);
+
+// Playwright records VP8/WebM. LinkedIn, GitHub, and QuickTime all want H.264 MP4.
+// -movflags +faststart puts the moov atom first so the file streams instead of
+// having to download in full before the first frame renders.
+const ffmpeg = process.env.FFMPEG_PATH || "ffmpeg";
+const args = [
+  "-y", "-loglevel", "error",
+  "-i", webm,
+  "-c:v", "libx264",
+  "-preset", "slow",
+  "-crf", "20",
+  "-pix_fmt", "yuv420p",
+  "-profile:v", "high",
+  "-r", "25",
+  "-movflags", "+faststart",
+  "-an",
+  out,
+];
+await new Promise((resolve, reject) => {
+  const p = spawn(ffmpeg, args, { stdio: ["ignore", "inherit", "inherit"] });
+  p.on("error", reject);
+  p.on("close", (code) => (code === 0 ? resolve() : reject(new Error("ffmpeg exited " + code))));
+});
+await rm(join(root, "recordings"), { recursive: true, force: true });
+console.log(out);

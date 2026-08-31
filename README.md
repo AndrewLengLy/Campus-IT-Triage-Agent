@@ -10,7 +10,7 @@ Native **Salesforce DX** backend for an **Agentforce** agent that sits in **Serv
 
 This is not a web app and not an OAuth integration. There are no Connected Apps, named credentials, or runtime secrets. Authenticate the [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli), deploy `force-app`, assign a permission set.
 
-**App recording (silent, captions on screen):** [docs/demo/campus-it-app-recording.mp4](docs/demo/campus-it-app-recording.mp4)
+**App walkthrough (65s, silent, captions on screen):** [docs/demo/campus-it-app-recording.mp4](docs/demo/campus-it-app-recording.mp4) — a walkthrough of the Campus IT workspace interface, labelled on screen as such. It is not screen capture from a live org; it mirrors what the Apex in this repo does. To record the real thing, deploy and follow [`docs/video-script.md`](docs/video-script.md).
 
 **Slide explainer (80s):** [docs/demo/campus-it-triage-agent-demo.mp4](docs/demo/campus-it-triage-agent-demo.mp4) · [Release download](https://github.com/AndrewLengLy/Campus-IT-Triage-Agent/releases/download/v1.0.0/campus-it-triage-agent-demo.mp4)
 
@@ -157,7 +157,7 @@ Post-install: assign the permission set, seed demo data, assign the Case layout,
 
 ## Usage walkthrough
 
-Eight-minute version: [`docs/demo-script.md`](docs/demo-script.md). Sixty-second recording script: [`docs/video-script.md`](docs/video-script.md).
+Eight-minute version: [`docs/demo-script.md`](docs/demo-script.md). Sixty-second recording script: [`docs/video-script.md`](docs/video-script.md). LinkedIn launch copy and posting notes: [`docs/linkedin-post.md`](docs/linkedin-post.md).
 
 **Without Agentforce** — open **Campus IT**, inspect Jordan’s seeded High hardware Case (first-response due, self-service article, published comment) and today’s interaction rows.
 
