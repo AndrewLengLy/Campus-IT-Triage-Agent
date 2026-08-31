@@ -1,157 +1,58 @@
 # Handing a Cursor-built project to Claude Code
 
-The prompt below is the one to paste as the first message in a new Claude Code
-session on a repo that was built somewhere else and is now being taken
-seriously. It is written from what actually happened when this repo made that
-move — see [What it caught here](#what-it-caught-here) for the record.
+This is packaged as a skill: [`.claude/skills/repo-handoff/`](../.claude/skills/repo-handoff/SKILL.md).
+It triggers on its own when a repo built elsewhere gets handed over, so there
+is nothing to paste. This page is the provenance — where the steps came from
+and what they caught — plus how to install the skill globally.
 
-The shape of it: **audit before you add, then ship it.** A project that was
+**The skill's [`SKILL.md`](../.claude/skills/repo-handoff/SKILL.md) is the
+source of truth for the steps.** They are not duplicated here, so the two
+cannot drift.
+
+## Install it for every project
+
+The skill lives in this repo, which makes it active here. To have it fire on
+any repo:
+
+```bash
+cp -r .claude/skills/repo-handoff ~/.claude/skills/
+```
+
+Nothing else to configure. It triggers on phrasings like "I built this in
+Cursor, take it over," "get this ready to post," "make a demo video for this,"
+or "audit this before I show anyone."
+
+## What it does
+
+Nine steps in three groups.
+
+**1–5, the audit.** Find claims the code does not back, fix framing before
+features, verify rather than assert, harden bulk and failure paths, and
+document out-of-scope findings for a decision instead of fixing them in
+passing.
+
+**6–7, the launch material.** A 60–75s silent captioned walkthrough video, and
+a plain-text post with the first line inside the mobile truncation cut, the
+link in a first comment, and three registers on one opener.
+
+**8, the voice spec**, which governs both the captions and the post — see
+below.
+
+**9, the PR body**, with Verification and Not Done sections.
+
+Two bundled scripts do the parts worth automating:
+
+| Script | What it does |
+| --- | --- |
+| `scripts/voice_check.py` | Measures a draft against the voice spec and flags Markdown artifacts, emoji, an over-length first line, and median drift |
+| `scripts/record_walkthrough.mjs` | Serves a walkthrough page, records it headless, encodes web-ready H.264 |
+
+The shape of all of it: **audit before you add, then ship it.** A project
 vibe-coded to working usually has a gap between what it says about itself and
 what it does. That gap is invisible from inside the session that wrote it and
 obvious to anyone in the field who reads it. Close that first. Then produce
-the launch material — the demo video and the post — because a repo nobody sees
-is the same as a repo that doesn't work.
-
-Steps 6 and 7 produce that material, and they are governed by the voice spec
-in step 8, which is [derived from measurements](#the-voice-spec) of the post
-Andrew chose as primary here, not from a general idea of good writing.
-
-## The prompt
-
-```text
-This repo was built in Cursor and I'm handing it to you. Before you add
-anything, audit what's here as if you were the engineer whose name goes on it
-publicly. Then get it ready to post.
-
-Read the whole thing first — code, README, docs, scripts, demo assets, launch
-copy, sample data. Then work in this order.
-
-1. FIND THE CLAIMS THAT DON'T HOLD.
-Everywhere the repo states or implies something — a README feature, a caption
-on a demo video, a screenshot, a metric, a badge, a name in a UI, seeded data,
-a draft post — check it against what the code actually does. Report each gap
-with the exact file and line and what is actually true. Weight it by who reads
-it: a mockup captioned as production, a stock persona in a video going out
-under my name, a claimed integration that is a hardcoded string. Assume the
-audience does this for a living and will notice.
-
-2. FIX THE FRAMING BEFORE THE FEATURES.
-Where something is a demo or a reconstruction, label it as one instead of
-deleting it. Keep the asset, make it accurate, and make the disclosure
-persistent — every frame and every doc that links it, not one caption and not
-a footnote.
-
-3. VERIFY, DON'T ASSERT.
-Anything you put in a commit message, PR body, or README, you check first.
-Decode the video and read its real duration, resolution, and frame count.
-Count the characters against the real limit. Run the tests. If this
-environment cannot run something, say so plainly, say what has to be run to
-get the real number, and never round an unmeasured thing up into a claim.
-
-4. HARDEN WHAT'S THIN.
-Tests that build their own data and don't lean on ambient environment state.
-Bulk and failure paths, not just the happy one — and where the cost of an
-operation matters, assert on the cost so a regression fails the test rather
-than showing up in production. One command from fresh clone to a working
-environment. Any step a script leaves as undocumented manual work becomes part
-of the script.
-
-5. DON'T SILENTLY WIDEN SCOPE.
-Real problems you find outside what I asked for get documented for a decision
-— in an architecture doc or the PR body — not fixed in passing. Where current
-behavior is questionable but changing it is my call, write a clearly named
-characterization test that records what it does today, so the suite stays
-green while the decision is open.
-
-6. BUILD THE DEMO VIDEO.
-60 to 75 seconds, 1920x1080, silent with captions burned into the frame —
-LinkedIn autoplays muted and most people never turn sound on. Build it as a
-self-contained HTML page committed to the repo that reconstructs the real UI
-with no network calls, drive it with a timed script, and record it headless
-with Playwright. Encode H.264 at CRF 20, yuv420p, 25 fps, with -movflags
-+faststart so it streams instead of downloading in full before the first
-frame, and -an since there is no audio.
-
-Rules that matter more than the encoding:
-- One command regenerates it from the repo. No manual conversion step, and
-  honor CHROMIUM_PATH / FFMPEG_PATH so it runs anywhere.
-- Wait on a completion flag the page sets, not a fixed timeout, or you will
-  ship a video that cuts off mid-scene on a slow machine.
-- Route every caption through one function, so an honesty tag appended there
-  holds for the whole runtime instead of one frame.
-- Frame 0 is the thumbnail. It carries the project name and the claim.
-- If it is a reconstruction, say so on screen for the full duration.
-- The logged-in user in any UI is me, not a stock persona.
-- Show the behavior that is hard, not the happy path: the thing it refuses to
-  do is usually the most convincing beat.
-- Caption copy follows the voice spec in step 8. Same register as the post.
-
-7. WRITE THE LAUNCH POST.
-Plain text — LinkedIn renders Markdown literally, so bold markers and
-backticks ship as punctuation. Under 3000 characters.
-
-- First line at most 140 characters. That is the mobile "see more" cut, and a
-  first line past it truncates mid-sentence, usually on the best word in it.
-- Open on a concrete specific from the domain that proves I have actually done
-  this work. Not a claim of experience — a detail only someone who has would
-  reach for.
-- Repo link goes in a first comment, not the body. A bare external link in the
-  body suppresses reach.
-- Upload the video natively. Never link out to YouTube or Vimeo.
-- Carry the same disclosure the video carries. The people in those hashtags
-  will recognize a reconstruction, and being corrected in the comments costs
-  far more than the qualifier.
-- Ship three registers on the same opener: blunt as primary, conversational,
-  technical. Give me the character count and first-line length for each.
-- If the hook is seasonal or otherwise expires, say so in the posting notes.
-- Include posting mechanics and video specs so I can post it without asking
-  you anything.
-
-8. WRITE IT IN MY VOICE.
-Governs step 6, step 7, and any copy you write for me.
-
-- One idea per paragraph. Most paragraphs are one sentence. Use the white
-  space.
-- Short declaratives, hard stops. Median sentence around 25-30 characters.
-  "They guess." "No secrets." "Four-hour clock."
-- Fragments are fine when they land. Noun phrases as sentences.
-- Concrete specifics instead of adjectives. Real identifiers, real numbers,
-  real names for things. Never "seamless," "powerful," "robust."
-- Contrast pairs do the arguing: "in Setup, not in code." "It reuses 00001024.
-  It does not open 00001025."
-- State the turn flatly. "So I built one that doesn't." No build-up.
-- Lead with what it refuses to do. The negative space is the product.
-- No emoji. No exclamation marks. No "excited to share." No rhetorical
-  questions to open.
-- Admit the limits in the same flat register as the claims. Do not soften
-  them and do not dramatize them.
-- End plainly. "Repo in the comments."
-
-9. WRITE THE PR BODY FOR A REVIEWER.
-Lead with what was wrong and why it mattered, then what changed. Include a
-Verification section listing what you actually checked and how. Include a Not
-Done section listing what you couldn't do and why. If the honest answer is
-something I don't want to hear, that is the one I most need in there.
-
-If the audit turns up more than a handful of things, list them, tell me which
-you're taking first, and start. Ask me before any call that changes how the
-project is positioned. Don't ask me to approve copy before writing it — write
-it, then I'll edit.
-```
-
-## Optional add-ons
-
-Append only the ones that apply. Each is a line that changed the outcome here.
-
-| Situation | Line to add |
-| --- | --- |
-| The repo is about to be posted publicly | `Assume this ships to LinkedIn this week. Anything that would embarrass me in front of someone who does this for a living is a P0.` |
-| The project can't be screen-recorded live | `I have no deployed environment to capture. Build the walkthrough as a reconstruction and label it as one — do not fake a live capture.` |
-| It already has demo assets | `Re-derive every demo asset from a script in the repo so it can be regenerated, and check the encoding is actually web-playable, not just present.` |
-| Posting somewhere other than LinkedIn | `Check the copy against how the destination actually renders it and what it does to reach, not how Markdown looks in an editor.` |
-| The environment can't run the project | `You have no way to run this. Every coverage or performance number is therefore an estimate and must be labelled as one.` |
-| It is a library or has no public face | `Skip the framing pass and the video. Spend the time on the API surface: what a caller can misuse, what is undocumented, and what breaks on upgrade.` |
-| Someone else keeps working in Cursor | `Leave the repo in a state where the next Cursor session inherits the standard: put the rules in CLAUDE.md rather than only in this PR.` |
+the launch material, because a repo nobody sees is the same as a repo that
+does not work.
 
 ## The voice spec
 
@@ -176,8 +77,12 @@ as one piece: *"Self-service match. The Case list does not grow. Deflection
 stays measurable."* · *"Same student, same laptop. Reuse 00001024. Do not open
 00001025."*
 
-Re-run the measurement on any post before shipping it. If the median sentence
-is drifting past 40 characters, it has stopped sounding like him.
+Re-run the measurement on any draft before shipping it — that is what
+`scripts/voice_check.py` in the skill is for. If the median sentence drifts
+past 40 characters, it has stopped sounding like him.
+
+The numbers are targets, not a rubric. Copy that hits every metric and says
+nothing is still bad copy.
 
 ## What it caught here
 
