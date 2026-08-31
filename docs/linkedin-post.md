@@ -44,9 +44,11 @@ It also handles the things that make backlogs worse. If the same student writes 
 
 The idea is to improve ticket resolution times. Routine problems are given known solutions before queuing for support and the person who needs specialized solutions can get recognized faster.
 
-The routing rules, the known solutions, and the response deadlines all live in Salesforce settings instead of the code, so whoever runs the desk can retune them without a developer.
+What I learned building this is that the conversation was the easy part. Getting it to answer a wifi question is straightforward. Making sure it does not open a second ticket for a problem that already has one is where most of the thinking went, and that is the part that actually keeps a queue from getting worse.
 
-The part I found most interesting to build was the record keeping. Every action is written to a log that can't be edited or deleted afterwards, and that is enforced in the code rather than by policy, so the desk can show how much really got resolved without support instead of estimating it.
+The second thing I learned is that a resolution number is worth nothing if someone can edit the record afterwards. So every action writes to a log that can't be edited or deleted, and that is enforced in the code rather than by policy.
+
+The last one was that I should not be in the middle of it. The routing rules, the known solutions, and the response deadlines all live in Salesforce settings instead of the code, so whoever runs the desk can retune them without waiting on a developer.
 
 Important to note that while the video walks through the interface, it isn't recorded from a live org. However the code is real, it deploys with the Salesforce CLI, and the Apex is tested.
 
