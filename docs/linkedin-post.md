@@ -6,18 +6,70 @@ show up as literal characters in the feed.
 
 ## Post
 
-Opens on the start of term and names `eduroam` — the specific that signals
-you've actually worked a campus desk rather than read about one. Short lines and
-hard stops from there: the claims are left to stand on their own without
-hedging, and the demo beats are stated as facts rather than narrated.
+Andrew's own draft, edited rather than replaced. His sentences and rhythm are
+kept — "Oftentimes", "The idea is to improve ticket resolution times", the
+"While the video… However the code is real" construction, the short enthusiastic
+sign-off. Three things were added because the draft was missing them:
 
-The first line is 140 characters, which keeps it inside LinkedIn's mobile
-"…see more" cut (~140) so it reads whole before anyone expands the post. If you
-edit that line, keep it under that.
+1. **The repo is public, so the post should send people there.** The draft ended
+   on "Repo will come out soon!", which spends the post's attention and asks for
+   it back later. Attention on a feed does not come back.
+2. **Duplicate suppression.** Reusing the open ticket instead of opening a
+   second one is the behaviour that separates this from a FAQ bot, and it was
+   in the video but not the post.
+3. **The audit trail.** Without it the post describes something any chatbot
+   claims. "A log that can't be edited afterwards" is the sentence that makes
+   the deflection number believable.
+
+The first line is 132 characters, inside LinkedIn's mobile "…see more" cut
+(~140). The draft's opener ran 203 and would have been chopped mid-clause, so
+"around this time" was dropped — "starting up again" already carries the timing.
+
+**Two claims to be comfortable with.** The four hour deadline is this repo's own
+SLA rule for high-priority tickets, not an industry standard. And the hashtags
+are an addition — the draft had none; they help discovery but drop them if they
+feel off.
 
 **The opener has a shelf life.** It reads as current for the first couple of
-weeks of the semester and stale after. Post it while term is starting, or swap
-the first line.
+weeks of term and stale after.
+
+```text
+The regular semester is starting up again, and the IT issues I remember having to go through were eduroam, password resets, and MFA.
+
+Oftentimes a high volume of people running into the same problems leads to a backlog that could be solved with the same solution.
+
+So I built a Salesforce app that sorts problems by how fast they can potentially be solved. It is Apex actions that Agentforce can call, creating real Cases on real support queues. Where a wifi problem is handed a known solution and can get sorted out in a minute, a broken laptop is marked high priority, routed to the hardware queue, and given a four hour first response deadline.
+
+It also handles the things that make backlogs worse. If the same student writes in again about the same laptop issues, it adds to the request they already have instead of opening another ticket, so they can keep their position in queue. Updates on a closed ticket get turned away rather than quietly lost.
+
+The idea is to improve ticket resolution times. Routine problems are given known solutions before queuing for support and the person who needs specialized solutions can get recognized faster.
+
+What I learned building this is that the conversation was the easy part. Getting it to answer a wifi question is straightforward. Making sure it does not open a second ticket for a problem that already has one is where most of the thinking went, and that is the part that actually keeps a queue from getting worse.
+
+The second thing I learned is that a resolution number is worth nothing if someone can edit the record afterwards. So every action writes to a log that can't be edited or deleted, and that is enforced in the code rather than by policy.
+
+The last one was that I should not be in the middle of it. The routing rules, the known solutions, and the response deadlines all live in Salesforce settings instead of the code, so whoever runs the desk can retune them without waiting on a developer.
+
+Important to note that while the video walks through the interface, it isn't recorded from a live org. However the code is real, it deploys with the Salesforce CLI, and the Apex is tested.
+
+Link to the repo is in the comments! :)
+```
+
+### First comment (post this immediately after)
+
+```text
+Code, architecture notes, and deploy steps:
+https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
+
+Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
+```
+
+---
+
+## Alternates
+
+<details>
+<summary><b>Blunt</b> — short lines, hard stops, no hedging. Reads confident, can read cold.</summary>
 
 ```text
 The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
@@ -47,50 +99,6 @@ The video is a walkthrough of the interface, labelled on screen, not a live org.
 Repo in the comments.
 
 #Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
-```
-
-### First comment (post this immediately after)
-
-```text
-Code, architecture notes, and deploy steps:
-https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
-
-Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
-```
-
----
-
-## Alternates
-
-Same opener, different register. Both keep the walkthrough disclosure.
-
-<details>
-<summary><b>Conversational</b> — first person, ends on a question to service-desk people. Invites replies rather than daring people to poke holes.</summary>
-
-```text
-The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
-
-None of it is hard. It's just constant. And the student whose laptop actually died the night before an exam is sitting in that same queue, behind all of it.
-
-That ordering problem is the part I wanted to work on, so I built a triage agent on Salesforce. Here's 65 seconds of it — no sound, captions are on screen.
-
-The part I care about most is what it doesn't do.
-
-A student reports WiFi dropping in their residence hall. It hands back the reconnect steps and opens nothing. No ticket. That's a deflection, and it gets counted rather than guessed at.
-
-Another student's laptop won't power on before an exam. It walks through first aid, then opens exactly one Case on the Hardware queue — High priority, four-hour response clock, contact linked.
-
-Then that same student messages again about that same laptop. It reuses the existing ticket instead of opening a second one. That single behaviour is most of what makes support bots infuriating.
-
-Under the hood: five Apex actions Agentforce can call, with routing rules and SLA hours in Custom Metadata, so a service desk lead retunes them in Setup without touching code. Every action writes an audit row that can't be edited or deleted, so the deflection number can't quietly drift.
-
-Being upfront: the video is a walkthrough of the interface, labelled as such, not a recording of a live org. The Apex, metadata, and permission set are real and deploy with the Salesforce CLI.
-
-Still learning this stack. If you've worked a campus service desk and I've got the model wrong somewhere, I'd genuinely like to hear it.
-
-Repo in the comments.
-
-#Salesforce #Agentforce #ServiceCloud #HigherEd #BuildInPublic
 ```
 
 </details>
@@ -133,8 +141,8 @@ Repo and architecture notes in the comments.
    link posts get less reach.
 2. Keep the GitHub URL out of the post body. Put it in the first comment
    (above). A bare external link in the body suppresses distribution.
-3. Only the first line or two show before "…see more" on mobile. The opener is
-   sized to survive that cut intact.
+3. Only the first line or two show before "…see more" on mobile. Every opener
+   here is sized to survive that cut intact.
 4. The video is silent with burned-in captions, which is what you want: LinkedIn
    autoplays muted, and most people never turn sound on.
 5. Timing: post while term is actually starting. The hook is doing real work and
@@ -149,9 +157,6 @@ Repo and architecture notes in the comments.
 | Resolution | 1920 x 1080 (16:9) |
 | Size | ~6 MB |
 | Audio | None — captions are burned in |
-
-LinkedIn accepts 3 seconds to 10 minutes and up to 5 GB, so this clears every
-limit with room to spare.
 
 ## What the video is, and is not
 
