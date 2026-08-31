@@ -7,17 +7,65 @@ show up as literal characters in the feed.
 ## Post
 
 Opens on the start of term and names `eduroam` — the specific that signals
-you've actually worked a campus desk rather than read about one. Short lines and
-hard stops from there: the claims are left to stand on their own without
-hedging, and the demo beats are stated as facts rather than narrated.
+you've actually worked a campus desk rather than read about one. Loose and
+spoken from there: contractions, questions, an aside. Says the same true things
+as the tighter versions below without sounding like a spec sheet.
 
-The first line is 140 characters, which keeps it inside LinkedIn's mobile
+The first line is 121 characters, which keeps it inside LinkedIn's mobile
 "…see more" cut (~140) so it reads whole before anyone expands the post. If you
 edit that line, keep it under that.
 
 **The opener has a shelf life.** It reads as current for the first couple of
 weeks of the semester and stale after. Post it while term is starting, or swap
 the first line.
+
+```text
+The semester's starting back up, so the tech support queue is about to be mostly eduroam, password resets, and MFA loops.
+
+None of it's hard. There's just a lot of it.
+
+And the laptop that actually died the night before an exam? It's stuck in line behind all of that.
+
+Most support bots don't help here. They guess, they open a second ticket for a problem that already has one, and nobody can tell you what actually got deflected.
+
+So I built one that doesn't do that.
+
+Here's 65 seconds of it — no sound, captions are on screen.
+
+Someone's WiFi keeps dropping. It hands back the fix and doesn't open a ticket at all. That's a deflection you can actually count.
+
+Someone's laptop won't turn on before an exam. First aid, then one ticket on the Hardware queue, high priority, four-hour clock.
+
+Same person messages again about the same laptop. It reuses ticket 00001024 instead of opening 00001025. That one's my favourite.
+
+Someone asks how backed up the desk is. Open tickets, longest wait, deflection rate — pulled from an audit trail nobody can edit.
+
+It's five Apex actions underneath. Routing rules and SLA hours live in Custom Metadata, so whoever runs the desk can change them in Setup without touching any code.
+
+One note: the video walks through the interface, not a live org, and it says so on screen. The code is real though — clone it and deploy it.
+
+Repo's in the comments.
+
+#Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
+```
+
+### First comment (post this immediately after)
+
+```text
+Code, architecture notes, and deploy steps:
+https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
+
+Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
+```
+
+---
+
+## Alternates
+
+Same opener, tighter registers. All keep the walkthrough disclosure.
+
+<details>
+<summary><b>Blunt</b> — short lines, hard stops, no hedging. Reads confident, can read cold.</summary>
 
 ```text
 The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
@@ -49,20 +97,7 @@ Repo in the comments.
 #Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
 ```
 
-### First comment (post this immediately after)
-
-```text
-Code, architecture notes, and deploy steps:
-https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
-
-Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
-```
-
----
-
-## Alternates
-
-Same opener, different register. Both keep the walkthrough disclosure.
+</details>
 
 <details>
 <summary><b>Conversational</b> — first person, ends on a question to service-desk people. Invites replies rather than daring people to poke holes.</summary>
@@ -133,8 +168,8 @@ Repo and architecture notes in the comments.
    link posts get less reach.
 2. Keep the GitHub URL out of the post body. Put it in the first comment
    (above). A bare external link in the body suppresses distribution.
-3. Only the first line or two show before "…see more" on mobile. The opener is
-   sized to survive that cut intact.
+3. Only the first line or two show before "…see more" on mobile. Every opener
+   here is sized to survive that cut intact.
 4. The video is silent with burned-in captions, which is what you want: LinkedIn
    autoplays muted, and most people never turn sound on.
 5. Timing: post while term is actually starting. The hook is doing real work and
