@@ -7,17 +7,66 @@ show up as literal characters in the feed.
 ## Post
 
 Opens on the start of term and names `eduroam` — the specific that signals
-you've actually worked a campus desk rather than read about one. Loose and
-spoken from there: contractions, questions, an aside. Says the same true things
-as the tighter versions below without sounding like a spec sheet.
+you've actually worked a campus desk rather than read about one. Explains the
+thing in plain language after that: no Apex, no Custom Metadata, no "deflection",
+no queue names. Someone outside Salesforce can follow every line, and someone
+inside it can still tell exactly what was built.
 
-The first line is 121 characters, which keeps it inside LinkedIn's mobile
+The first line is 129 characters, which keeps it inside LinkedIn's mobile
 "…see more" cut (~140) so it reads whole before anyone expands the post. If you
 edit that line, keep it under that.
 
 **The opener has a shelf life.** It reads as current for the first couple of
 weeks of the semester and stale after. Post it while term is starting, or swap
 the first line.
+
+```text
+The semester's starting back up, so the campus IT queue is about to fill with the same few things: eduroam, password resets, MFA.
+
+None of it's hard. There's just a lot of it.
+
+And the person whose laptop actually died the night before an exam is stuck in line behind all of it.
+
+So I built something that sorts that out before a human sees it.
+
+Here's 65 seconds — no sound, captions on screen.
+
+A student says their WiFi keeps dropping. It gives them the steps to fix it and doesn't open a ticket at all. Nobody on staff ever has to look at it.
+
+A student says their laptop won't turn on before an exam. It tries the quick fixes first, then opens one ticket, sends it to the hardware team, marks it urgent, and starts a four-hour clock on it.
+
+That same student writes in again about the same laptop. It adds to the ticket they already have instead of opening a second one. Duplicate tickets are half of why support queues get bad.
+
+Someone on staff asks how backed up the desk is. It answers: how many tickets are open, how long the oldest one has been waiting, and how much got solved today without a ticket.
+
+That last number is the one I care about. It's counted, not estimated — every action writes to a log that can't be edited afterwards, so nobody can round it up later.
+
+And the rules behind all of it (which team gets what, how fast each thing needs a reply) live in a settings screen. Whoever runs the desk can change them without a developer.
+
+One note: the video walks through the interface, not a live system, and says so on screen. The code is real though.
+
+Repo's in the comments.
+
+#Salesforce #Agentforce #ServiceCloud #HigherEd
+```
+
+### First comment (post this immediately after)
+
+```text
+Code, architecture notes, and deploy steps:
+https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
+
+Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
+```
+
+---
+
+## Alternates
+
+Same opener, progressively more technical. All keep the walkthrough disclosure.
+
+<details>
+<summary><b>Casual</b> — spoken register, keeps the Salesforce terms (Apex, Custom Metadata, Hardware queue).</summary>
 
 ```text
 The semester's starting back up, so the tech support queue is about to be mostly eduroam, password resets, and MFA loops.
@@ -49,20 +98,7 @@ Repo's in the comments.
 #Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
 ```
 
-### First comment (post this immediately after)
-
-```text
-Code, architecture notes, and deploy steps:
-https://github.com/AndrewLengLy/Campus-IT-Triage-Agent
-
-Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one permission set. Agentforce is only needed for the conversational half — the technician app works without it.
-```
-
----
-
-## Alternates
-
-Same opener, tighter registers. All keep the walkthrough disclosure.
+</details>
 
 <details>
 <summary><b>Blunt</b> — short lines, hard stops, no hedging. Reads confident, can read cold.</summary>
