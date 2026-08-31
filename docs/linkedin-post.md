@@ -6,42 +6,49 @@ show up as literal characters in the feed.
 
 ## Post
 
-Opens on the start of term and names `eduroam` — the specific that signals
-you've actually worked a campus desk rather than read about one. Plain language
-throughout: no Apex, no Custom Metadata, no "deflection", no queue names, no
-ticket numbers. Short sentences, one idea each. Someone outside Salesforce can
-follow every line, and someone inside it can still tell exactly what was built.
+Written for someone with no context at all — not a Salesforce person, not
+someone who has worked a service desk. It opens on a situation anyone
+recognises (your laptop dies before an exam and help doesn't come in time),
+names the reason (routine requests are ahead of you in line), and only then
+says what was built. Every demo beat is framed by who it helps rather than by
+what it does.
 
-The first line is 124 characters, which keeps it inside LinkedIn's mobile
-"…see more" cut (~140) so it reads whole before anyone expands the post. If you
-edit that line, keep it under that.
+No product vocabulary anywhere: no Apex, no Custom Metadata, no queue names, no
+ticket numbers, and "deflection" never appears. `eduroam` stays, because it is
+the one word that proves this was written by someone who has been near a campus
+desk.
+
+The first line is 87 characters, inside LinkedIn's mobile "…see more" cut
+(~140), so the whole hook lands before anyone expands the post.
+
+**Two things to stand behind before posting.** The opening line is a
+generalisation from experience, not a measured figure — it should match what
+you have actually seen. And the four-hour deadline is what this repo's SLA rules
+set for high-priority tickets, not an industry standard.
 
 **The opener has a shelf life.** It reads as current for the first couple of
-weeks of the semester and stale after. Post it while term is starting, or swap
-the first line.
+weeks of the semester and stale after. Post it while term is starting.
 
 ```text
-The semester's starting back up, so campus IT is about to get the same few questions all day: eduroam, password resets, MFA.
+If your laptop dies the night before an exam, campus IT often can't get to you in time.
 
-None of it's hard. There's just a lot of it.
+It isn't that nobody cares. It's that the line in front of you is full of password resets and people who can't get onto eduroam — things that take two minutes and a set of instructions.
 
-And the student whose laptop died the night before an exam waits behind all of it.
+So the emergencies wait behind the routine.
 
-So I built something to clear that out before a person sees it.
+I built something that fixes the order.
 
-Here's 65 seconds. No sound, captions on screen.
+65 seconds, no sound, captions on screen.
 
-A student's WiFi keeps dropping. It sends the fix. No ticket. Nobody on staff ever sees it.
+Someone can't get on the WiFi. It answers right away with the steps that fix it. They're sorted in a minute, and it never reaches a person.
 
-A student's laptop won't turn on before an exam. It tries the quick fixes, then opens one ticket, sends it to the hardware team, and puts a four-hour clock on it.
+Someone's laptop won't turn on before an exam. That one goes straight to a human, marked urgent, with a four-hour deadline on it.
 
-The same student writes again about the same laptop. It adds to the ticket they already have. No second ticket.
+That same student follows up the next day. It adds to the request they already have instead of starting a new one, so they keep their place in line.
 
-Someone on staff asks how busy the desk is. It says how many tickets are open, how long the oldest one has waited, and how much got handled today without a ticket.
+The routine stuff never enters the queue at all. The person with the real problem is near the front instead of buried in it.
 
-That last number is the point. It's counted, not guessed — every action writes to a log nobody can edit later.
-
-The rules behind it live in a settings screen, so the desk can change them without a developer.
+It also keeps an honest count. Every action is written to a record nobody can edit afterwards, so the desk can show what it actually handled instead of estimating it.
 
 One note: the video shows the interface, not a live system, and says so on screen. The code is real.
 
@@ -63,10 +70,11 @@ Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one per
 
 ## Alternates
 
-Same opener, progressively more technical. All keep the walkthrough disclosure.
+Progressively more technical, each assuming more of the reader. All keep the
+walkthrough disclosure.
 
 <details>
-<summary><b>Casual</b> — spoken register, but keeps the Salesforce terms (Apex, Custom Metadata, Hardware queue).</summary>
+<summary><b>Casual</b> — spoken register, but assumes the reader knows Salesforce (Apex, Custom Metadata, Hardware queue).</summary>
 
 ```text
 The semester's starting back up, so the tech support queue is about to be mostly eduroam, password resets, and MFA loops.
