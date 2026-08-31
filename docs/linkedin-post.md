@@ -6,53 +6,49 @@ show up as literal characters in the feed.
 
 ## Post
 
-Written for someone with no context at all — not a Salesforce person, not
-someone who has worked a service desk. It opens on a situation anyone
-recognises (your laptop dies before an exam and help doesn't come in time),
-names the reason (routine requests are ahead of you in line), and only then
-says what was built. Every demo beat is framed by who it helps rather than by
-what it does.
+Andrew's own draft, edited rather than replaced. His sentences and rhythm are
+kept — "Oftentimes", "The idea is to improve ticket resolution times", the
+"While the video… However the code is real" construction, the short enthusiastic
+sign-off. Three things were added because the draft was missing them:
 
-No product vocabulary anywhere: no Apex, no Custom Metadata, no queue names, no
-ticket numbers, and "deflection" never appears. `eduroam` stays, because it is
-the one word that proves this was written by someone who has been near a campus
-desk.
+1. **The repo is public, so the post should send people there.** The draft ended
+   on "Repo will come out soon!", which spends the post's attention and asks for
+   it back later. Attention on a feed does not come back.
+2. **Duplicate suppression.** Reusing the open ticket instead of opening a
+   second one is the behaviour that separates this from a FAQ bot, and it was
+   in the video but not the post.
+3. **The audit trail.** Without it the post describes something any chatbot
+   claims. "A log that can't be edited afterwards" is the sentence that makes
+   the deflection number believable.
 
-The first line is 87 characters, inside LinkedIn's mobile "…see more" cut
-(~140), so the whole hook lands before anyone expands the post.
+The first line is 133 characters, inside LinkedIn's mobile "…see more" cut
+(~140). The draft's opener ran 203 and would have been chopped mid-clause, so
+"around this time" was dropped — "starting up again" already carries the timing.
 
-**Two things to stand behind before posting.** The opening line is a
-generalisation from experience, not a measured figure — it should match what
-you have actually seen. And the four-hour deadline is what this repo's SLA rules
-set for high-priority tickets, not an industry standard.
+**Two claims to be comfortable with.** The four hour deadline is this repo's own
+SLA rule for high-priority tickets, not an industry standard. And the hashtags
+are an addition — the draft had none; they help discovery but drop them if they
+feel off.
 
 **The opener has a shelf life.** It reads as current for the first couple of
-weeks of the semester and stale after. Post it while term is starting.
+weeks of term and stale after.
 
 ```text
-If your laptop dies the night before an exam, campus IT often can't get to you in time.
+The regular semester is starting up again, and the IT issues I remember were things like eduroam, mandatory password resets, and MFA.
 
-It isn't that nobody cares. It's that the line in front of you is full of password resets and people who can't get onto eduroam — things that take two minutes and a set of instructions.
+Oftentimes a high volume of people running into the same problems leads to a backlog that could have been solved with the same solution.
 
-So the emergencies wait behind the routine.
+So I built a Salesforce app that sorts problems by how urgent they actually are. A wifi problem is handed a known solution that sorts it in about a minute. A broken laptop before an exam is marked urgent and goes straight to support with a four hour deadline on it.
 
-I built something that fixes the order.
+It also handles the thing that usually makes a backlog worse. If the same student writes in again about the same laptop, it adds to the request they already have instead of opening a second one, so they keep their place in line.
 
-65 seconds, no sound, captions on screen.
+The idea is to improve ticket resolution times. Routine problems are given known solutions before queuing for support, and the person who actually needs a person can be seen sooner.
 
-Someone can't get on the WiFi. It answers right away with the steps that fix it. They're sorted in a minute, and it never reaches a person.
+The part I found most interesting to build was the record keeping. Every action is written to a log that can't be edited afterwards, so the desk can show how much really got resolved without support instead of estimating it.
 
-Someone's laptop won't turn on before an exam. That one goes straight to a human, marked urgent, with a four-hour deadline on it.
+While the video walks through the interface, the system isn't live. However the code is real, and the repo is public now if you want to read it or deploy it yourself.
 
-That same student follows up the next day. It adds to the request they already have instead of starting a new one, so they keep their place in line.
-
-The routine stuff never enters the queue at all. The person with the real problem is near the front instead of buried in it.
-
-It also keeps an honest count. Every action is written to a record nobody can edit afterwards, so the desk can show what it actually handled instead of estimating it.
-
-One note: the video shows the interface, not a live system, and says so on screen. The code is real.
-
-Repo's in the comments.
+Link is in the comments!
 
 #Salesforce #Agentforce #ServiceCloud #HigherEd
 ```
@@ -69,44 +65,6 @@ Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one per
 ---
 
 ## Alternates
-
-Progressively more technical, each assuming more of the reader. All keep the
-walkthrough disclosure.
-
-<details>
-<summary><b>Casual</b> — spoken register, but assumes the reader knows Salesforce (Apex, Custom Metadata, Hardware queue).</summary>
-
-```text
-The semester's starting back up, so the tech support queue is about to be mostly eduroam, password resets, and MFA loops.
-
-None of it's hard. There's just a lot of it.
-
-And the laptop that actually died the night before an exam? It's stuck in line behind all of that.
-
-Most support bots don't help here. They guess, they open a second ticket for a problem that already has one, and nobody can tell you what actually got deflected.
-
-So I built one that doesn't do that.
-
-Here's 65 seconds of it — no sound, captions are on screen.
-
-Someone's WiFi keeps dropping. It hands back the fix and doesn't open a ticket at all. That's a deflection you can actually count.
-
-Someone's laptop won't turn on before an exam. First aid, then one ticket on the Hardware queue, high priority, four-hour clock.
-
-Same person messages again about the same laptop. It reuses ticket 00001024 instead of opening 00001025. That one's my favourite.
-
-Someone asks how backed up the desk is. Open tickets, longest wait, deflection rate — pulled from an audit trail nobody can edit.
-
-It's five Apex actions underneath. Routing rules and SLA hours live in Custom Metadata, so whoever runs the desk can change them in Setup without touching any code.
-
-One note: the video walks through the interface, not a live org, and it says so on screen. The code is real though — clone it and deploy it.
-
-Repo's in the comments.
-
-#Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
-```
-
-</details>
 
 <details>
 <summary><b>Blunt</b> — short lines, hard stops, no hedging. Reads confident, can read cold.</summary>
@@ -139,37 +97,6 @@ The video is a walkthrough of the interface, labelled on screen, not a live org.
 Repo in the comments.
 
 #Salesforce #Agentforce #ServiceCloud #HigherEd #ITSM
-```
-
-</details>
-
-<details>
-<summary><b>Conversational</b> — first person, ends on a question to service-desk people. Invites replies rather than daring people to poke holes.</summary>
-
-```text
-The regular semester is starting up and the highest volume of tech support problems are things like eduroam, password resets, and MFA loops.
-
-None of it is hard. It's just constant. And the student whose laptop actually died the night before an exam is sitting in that same queue, behind all of it.
-
-That ordering problem is the part I wanted to work on, so I built a triage agent on Salesforce. Here's 65 seconds of it — no sound, captions are on screen.
-
-The part I care about most is what it doesn't do.
-
-A student reports WiFi dropping in their residence hall. It hands back the reconnect steps and opens nothing. No ticket. That's a deflection, and it gets counted rather than guessed at.
-
-Another student's laptop won't power on before an exam. It walks through first aid, then opens exactly one Case on the Hardware queue — High priority, four-hour response clock, contact linked.
-
-Then that same student messages again about that same laptop. It reuses the existing ticket instead of opening a second one. That single behaviour is most of what makes support bots infuriating.
-
-Under the hood: five Apex actions Agentforce can call, with routing rules and SLA hours in Custom Metadata, so a service desk lead retunes them in Setup without touching code. Every action writes an audit row that can't be edited or deleted, so the deflection number can't quietly drift.
-
-Being upfront: the video is a walkthrough of the interface, labelled as such, not a recording of a live org. The Apex, metadata, and permission set are real and deploy with the Salesforce CLI.
-
-Still learning this stack. If you've worked a campus service desk and I've got the model wrong somewhere, I'd genuinely like to hear it.
-
-Repo in the comments.
-
-#Salesforce #Agentforce #ServiceCloud #HigherEd #BuildInPublic
 ```
 
 </details>
@@ -228,9 +155,6 @@ Repo and architecture notes in the comments.
 | Resolution | 1920 x 1080 (16:9) |
 | Size | ~6 MB |
 | Audio | None — captions are burned in |
-
-LinkedIn accepts 3 seconds to 10 minutes and up to 5 GB, so this clears every
-limit with room to spare.
 
 ## What the video is, and is not
 
