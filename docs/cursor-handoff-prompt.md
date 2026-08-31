@@ -5,18 +5,23 @@ session on a repo that was built somewhere else and is now being taken
 seriously. It is written from what actually happened when this repo made that
 move — see [What it caught here](#what-it-caught-here) for the record.
 
-The shape of it: **audit before you add.** A project that was vibe-coded to
-working usually has a gap between what it says about itself and what it does.
-That gap is invisible from inside the session that wrote it and obvious to
-anyone in the field who reads it. Closing it is worth more than the next
-feature.
+The shape of it: **audit before you add, then ship it.** A project that was
+vibe-coded to working usually has a gap between what it says about itself and
+what it does. That gap is invisible from inside the session that wrote it and
+obvious to anyone in the field who reads it. Close that first. Then produce
+the launch material — the demo video and the post — because a repo nobody sees
+is the same as a repo that doesn't work.
+
+Steps 6 and 7 produce that material, and they are governed by the voice spec
+in step 8, which is [derived from measurements](#the-voice-spec) of the post
+Andrew chose as primary here, not from a general idea of good writing.
 
 ## The prompt
 
 ```text
 This repo was built in Cursor and I'm handing it to you. Before you add
 anything, audit what's here as if you were the engineer whose name goes on it
-publicly.
+publicly. Then get it ready to post.
 
 Read the whole thing first — code, README, docs, scripts, demo assets, launch
 copy, sample data. Then work in this order.
@@ -58,19 +63,80 @@ behavior is questionable but changing it is my call, write a clearly named
 characterization test that records what it does today, so the suite stays
 green while the decision is open.
 
-6. WRITE THE PR BODY FOR A REVIEWER.
+6. BUILD THE DEMO VIDEO.
+60 to 75 seconds, 1920x1080, silent with captions burned into the frame —
+LinkedIn autoplays muted and most people never turn sound on. Build it as a
+self-contained HTML page committed to the repo that reconstructs the real UI
+with no network calls, drive it with a timed script, and record it headless
+with Playwright. Encode H.264 at CRF 20, yuv420p, 25 fps, with -movflags
++faststart so it streams instead of downloading in full before the first
+frame, and -an since there is no audio.
+
+Rules that matter more than the encoding:
+- One command regenerates it from the repo. No manual conversion step, and
+  honor CHROMIUM_PATH / FFMPEG_PATH so it runs anywhere.
+- Wait on a completion flag the page sets, not a fixed timeout, or you will
+  ship a video that cuts off mid-scene on a slow machine.
+- Route every caption through one function, so an honesty tag appended there
+  holds for the whole runtime instead of one frame.
+- Frame 0 is the thumbnail. It carries the project name and the claim.
+- If it is a reconstruction, say so on screen for the full duration.
+- The logged-in user in any UI is me, not a stock persona.
+- Show the behavior that is hard, not the happy path: the thing it refuses to
+  do is usually the most convincing beat.
+- Caption copy follows the voice spec in step 8. Same register as the post.
+
+7. WRITE THE LAUNCH POST.
+Plain text — LinkedIn renders Markdown literally, so bold markers and
+backticks ship as punctuation. Under 3000 characters.
+
+- First line at most 140 characters. That is the mobile "see more" cut, and a
+  first line past it truncates mid-sentence, usually on the best word in it.
+- Open on a concrete specific from the domain that proves I have actually done
+  this work. Not a claim of experience — a detail only someone who has would
+  reach for.
+- Repo link goes in a first comment, not the body. A bare external link in the
+  body suppresses reach.
+- Upload the video natively. Never link out to YouTube or Vimeo.
+- Carry the same disclosure the video carries. The people in those hashtags
+  will recognize a reconstruction, and being corrected in the comments costs
+  far more than the qualifier.
+- Ship three registers on the same opener: blunt as primary, conversational,
+  technical. Give me the character count and first-line length for each.
+- If the hook is seasonal or otherwise expires, say so in the posting notes.
+- Include posting mechanics and video specs so I can post it without asking
+  you anything.
+
+8. WRITE IT IN MY VOICE.
+Governs step 6, step 7, and any copy you write for me.
+
+- One idea per paragraph. Most paragraphs are one sentence. Use the white
+  space.
+- Short declaratives, hard stops. Median sentence around 25-30 characters.
+  "They guess." "No secrets." "Four-hour clock."
+- Fragments are fine when they land. Noun phrases as sentences.
+- Concrete specifics instead of adjectives. Real identifiers, real numbers,
+  real names for things. Never "seamless," "powerful," "robust."
+- Contrast pairs do the arguing: "in Setup, not in code." "It reuses 00001024.
+  It does not open 00001025."
+- State the turn flatly. "So I built one that doesn't." No build-up.
+- Lead with what it refuses to do. The negative space is the product.
+- No emoji. No exclamation marks. No "excited to share." No rhetorical
+  questions to open.
+- Admit the limits in the same flat register as the claims. Do not soften
+  them and do not dramatize them.
+- End plainly. "Repo in the comments."
+
+9. WRITE THE PR BODY FOR A REVIEWER.
 Lead with what was wrong and why it mattered, then what changed. Include a
 Verification section listing what you actually checked and how. Include a Not
 Done section listing what you couldn't do and why. If the honest answer is
 something I don't want to hear, that is the one I most need in there.
 
-Treat distribution as part of the deliverable — README, demo, and launch copy
-are load-bearing, not decoration, and the same standard of accuracy applies to
-them as to the code.
-
 If the audit turns up more than a handful of things, list them, tell me which
 you're taking first, and start. Ask me before any call that changes how the
-project is positioned.
+project is positioned. Don't ask me to approve copy before writing it — write
+it, then I'll edit.
 ```
 
 ## Optional add-ons
@@ -80,11 +146,38 @@ Append only the ones that apply. Each is a line that changed the outcome here.
 | Situation | Line to add |
 | --- | --- |
 | The repo is about to be posted publicly | `Assume this ships to LinkedIn this week. Anything that would embarrass me in front of someone who does this for a living is a P0.` |
-| It has a demo video or screenshots | `Re-derive every demo asset from a script in the repo so it can be regenerated, and check the encoding is actually web-playable, not just present.` |
-| It ships to a platform with formatting rules | `Check the copy against how the destination actually renders it, not how Markdown looks in an editor.` |
+| The project can't be screen-recorded live | `I have no deployed environment to capture. Build the walkthrough as a reconstruction and label it as one — do not fake a live capture.` |
+| It already has demo assets | `Re-derive every demo asset from a script in the repo so it can be regenerated, and check the encoding is actually web-playable, not just present.` |
+| Posting somewhere other than LinkedIn | `Check the copy against how the destination actually renders it and what it does to reach, not how Markdown looks in an editor.` |
 | The environment can't run the project | `You have no way to run this. Every coverage or performance number is therefore an estimate and must be labelled as one.` |
-| It is a library or has no public face | `Skip the framing pass. Spend the time on the API surface: what a caller can misuse, what is undocumented, and what breaks on upgrade.` |
+| It is a library or has no public face | `Skip the framing pass and the video. Spend the time on the API surface: what a caller can misuse, what is undocumented, and what breaks on upgrade.` |
 | Someone else keeps working in Cursor | `Leave the repo in a state where the next Cursor session inherits the standard: put the rules in CLAUDE.md rather than only in this PR.` |
+
+## The voice spec
+
+Step 8 is measured, not guessed. The numbers come from the primary post in
+`docs/linkedin-post.md` — the register chosen as primary over the
+conversational and technical alternates:
+
+| | |
+| --- | --- |
+| Length | 1237 characters |
+| Paragraphs | 14 |
+| Single-sentence paragraphs | 6 of 14 |
+| Median sentence | 26 characters |
+| First line | 140 characters, exactly at the mobile cut |
+
+The shortest sentences in it are the load-bearing ones: *They guess. No
+secrets. High priority. Hardware queue. Four-hour clock. No ticket opened. No
+hardcoded IDs. Five Apex actions.*
+
+The video captions are written in the same register, which is why the two read
+as one piece: *"Self-service match. The Case list does not grow. Deflection
+stays measurable."* · *"Same student, same laptop. Reuse 00001024. Do not open
+00001025."*
+
+Re-run the measurement on any post before shipping it. If the median sentence
+is drifting past 40 characters, it has stopped sounding like him.
 
 ## What it caught here
 
