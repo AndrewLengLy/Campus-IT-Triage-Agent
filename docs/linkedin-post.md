@@ -38,15 +38,17 @@ The regular semester is starting up again, and the IT issues I remember having t
 
 Oftentimes a high volume of people running into the same problems leads to a backlog that could be solved with the same solution.
 
-So I built a Salesforce app that sorts problems by how fast they can potentially be solved. It is Apex actions that Agentforce can call, creating real Cases on real support queues. Where a wifi problem is handed a known solution and can get sorted out in a minute, a broken laptop moves to urgent and queues up for support immediately.
+So I built a Salesforce app that sorts problems by how fast they can potentially be solved. It is Apex actions that Agentforce can call, creating real Cases on real support queues. Where a wifi problem is handed a known solution and can get sorted out in a minute, a broken laptop is marked high priority, routed to the hardware queue, and given a four hour first response deadline.
 
-It also handles the things that make backlogs worse. If the same student writes in again about the same laptop issues, it adds to the request they already have instead of opening another ticket, so they can keep their position in queue.
+It also handles the things that make backlogs worse. If the same student writes in again about the same laptop issues, it adds to the request they already have instead of opening another ticket, so they can keep their position in queue. Updates on a closed ticket get turned away rather than quietly lost.
 
 The idea is to improve ticket resolution times. Routine problems are given known solutions before queuing for support and the person who needs specialized solutions can get recognized faster.
 
-The part I found most interesting to build was the record keeping. Every action is written to a log that can't be edited afterwards, so the desk can show how much really got resolved without support instead of estimating it.
+The routing rules, the known solutions, and the response deadlines all live in Salesforce settings instead of the code, so whoever runs the desk can retune them without a developer.
 
-Important to note that while the video walks through the interface, it isn't recorded from a live org. However the code is real.
+The part I found most interesting to build was the record keeping. Every action is written to a log that can't be edited or deleted afterwards, and that is enforced in the code rather than by policy, so the desk can show how much really got resolved without support instead of estimating it.
+
+Important to note that while the video walks through the interface, it isn't recorded from a live org. However the code is real, it deploys with the Salesforce CLI, and the Apex is tested.
 
 Link to the repo is in the comments! :)
 ```
