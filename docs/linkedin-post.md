@@ -38,7 +38,7 @@ The regular semester is starting up again, and the IT issues I remember were thi
 
 Oftentimes a high volume of people running into the same problems leads to a backlog that could have been solved with the same solution.
 
-So I built a Salesforce app that sorts problems by how urgent they actually are. A wifi problem is handed a known solution that sorts it in about a minute. A broken laptop before an exam is marked urgent and goes straight to support with a four hour deadline on it.
+So I built a Salesforce app that sorts problems by how urgent they actually are. It is Apex actions that Agentforce can call, creating real Cases on real support queues. A wifi problem is handed a known solution that sorts it in about a minute. A broken laptop before an exam is marked urgent and goes straight to support with a four hour deadline on it.
 
 It also handles the thing that usually makes a backlog worse. If the same student writes in again about the same laptop, it adds to the request they already have instead of opening a second one, so they keep their place in line.
 
@@ -46,7 +46,7 @@ The idea is to improve ticket resolution times. Routine problems are given known
 
 The part I found most interesting to build was the record keeping. Every action is written to a log that can't be edited afterwards, so the desk can show how much really got resolved without support instead of estimating it.
 
-While the video walks through the interface, the system isn't live. However the code is real, and the repo is public now if you want to read it or deploy it yourself.
+While the video walks through the interface, it isn't recorded from a live org. However the code is real, and the repo is public now if you want to read it or deploy it yourself.
 
 Link is in the comments!
 
