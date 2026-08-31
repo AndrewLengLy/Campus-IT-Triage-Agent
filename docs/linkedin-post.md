@@ -7,12 +7,12 @@ show up as literal characters in the feed.
 ## Post
 
 Opens on the start of term and names `eduroam` — the specific that signals
-you've actually worked a campus desk rather than read about one. Explains the
-thing in plain language after that: no Apex, no Custom Metadata, no "deflection",
-no queue names. Someone outside Salesforce can follow every line, and someone
-inside it can still tell exactly what was built.
+you've actually worked a campus desk rather than read about one. Plain language
+throughout: no Apex, no Custom Metadata, no "deflection", no queue names, no
+ticket numbers. Short sentences, one idea each. Someone outside Salesforce can
+follow every line, and someone inside it can still tell exactly what was built.
 
-The first line is 129 characters, which keeps it inside LinkedIn's mobile
+The first line is 124 characters, which keeps it inside LinkedIn's mobile
 "…see more" cut (~140) so it reads whole before anyone expands the post. If you
 edit that line, keep it under that.
 
@@ -21,29 +21,29 @@ weeks of the semester and stale after. Post it while term is starting, or swap
 the first line.
 
 ```text
-The semester's starting back up, so the campus IT queue is about to fill with the same few things: eduroam, password resets, MFA.
+The semester's starting back up, so campus IT is about to get the same few questions all day: eduroam, password resets, MFA.
 
 None of it's hard. There's just a lot of it.
 
-And the person whose laptop actually died the night before an exam is stuck in line behind all of it.
+And the student whose laptop died the night before an exam waits behind all of it.
 
-So I built something that sorts that out before a human sees it.
+So I built something to clear that out before a person sees it.
 
-Here's 65 seconds — no sound, captions on screen.
+Here's 65 seconds. No sound, captions on screen.
 
-A student says their WiFi keeps dropping. It gives them the steps to fix it and doesn't open a ticket at all. Nobody on staff ever has to look at it.
+A student's WiFi keeps dropping. It sends the fix. No ticket. Nobody on staff ever sees it.
 
-A student says their laptop won't turn on before an exam. It tries the quick fixes first, then opens one ticket, sends it to the hardware team, marks it urgent, and starts a four-hour clock on it.
+A student's laptop won't turn on before an exam. It tries the quick fixes, then opens one ticket, sends it to the hardware team, and puts a four-hour clock on it.
 
-That same student writes in again about the same laptop. It adds to the ticket they already have instead of opening a second one. Duplicate tickets are half of why support queues get bad.
+The same student writes again about the same laptop. It adds to the ticket they already have. No second ticket.
 
-Someone on staff asks how backed up the desk is. It answers: how many tickets are open, how long the oldest one has been waiting, and how much got solved today without a ticket.
+Someone on staff asks how busy the desk is. It says how many tickets are open, how long the oldest one has waited, and how much got handled today without a ticket.
 
-That last number is the one I care about. It's counted, not estimated — every action writes to a log that can't be edited afterwards, so nobody can round it up later.
+That last number is the point. It's counted, not guessed — every action writes to a log nobody can edit later.
 
-And the rules behind all of it (which team gets what, how fast each thing needs a reply) live in a settings screen. Whoever runs the desk can change them without a developer.
+The rules behind it live in a settings screen, so the desk can change them without a developer.
 
-One note: the video walks through the interface, not a live system, and says so on screen. The code is real though.
+One note: the video shows the interface, not a live system, and says so on screen. The code is real.
 
 Repo's in the comments.
 
@@ -66,7 +66,7 @@ Developer Edition or a Trailhead Playground, Salesforce CLI, one deploy, one per
 Same opener, progressively more technical. All keep the walkthrough disclosure.
 
 <details>
-<summary><b>Casual</b> — spoken register, keeps the Salesforce terms (Apex, Custom Metadata, Hardware queue).</summary>
+<summary><b>Casual</b> — spoken register, but keeps the Salesforce terms (Apex, Custom Metadata, Hardware queue).</summary>
 
 ```text
 The semester's starting back up, so the tech support queue is about to be mostly eduroam, password resets, and MFA loops.
